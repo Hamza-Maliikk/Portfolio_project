@@ -79,7 +79,7 @@ PORT=5000
 
 ### 1. Clone the repo
 ```bash
-git clone https://github.com/yourusername/portfolio.git
+git clone https://github.com/Hamza-Maliikk/Express_JS_Practicing_Project.git
 cd portfolio
 ```
 
@@ -88,7 +88,7 @@ cd portfolio
 cd backend
 npm install
 # Create .env file and add your variables
-npm start
+npm run dev 
 ```
 
 ### 3. Setup Frontend
@@ -132,5 +132,3 @@ npm run dev
 MIT — feel free to use and modify.
 
 ---
-
-<p align="center">Made with ❤️ by <a href="https://github.com/yourusername">Hamza Malik</a></p>
