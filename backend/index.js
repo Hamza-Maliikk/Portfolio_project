@@ -167,70 +167,70 @@ app.get("/api/homepage", async (req, res) => {
 });
 
 // About
-app.get("/api/about", getAbout);
-app.post("/api/about",   AddAbout);
-app.put("/api/about/:id",  updateAbout);
-app.delete("/api/about/skill/:skill", deleteSkill);
+app.get("/api/about",getAbout);
+app.post("/api/about",authChecker,   AddAbout);
+app.put("/api/about/:id",authChecker,  updateAbout);
+app.delete("/api/about/skill/:skill",authChecker, deleteSkill);
 
 // Projects
 app.get("/api/projects", getProjects);
-app.post("/api/projects", AddProject);
-app.put("/api/projects/:id", updateProject);
-app.delete("/api/projects/:id", deleteProject);
+app.post("/api/projects",authChecker, AddProject);
+app.put("/api/projects/:id",authChecker, updateProject);
+app.delete("/api/projects/:id",authChecker, deleteProject);
 
 // Categories
 app.get("/api/categories", getCategories);
-app.post("/api/categories", AddCategory);
-app.put("/api/categories/:id", updateCategory);
-app.delete("/api/categories/:id", deleteCategory);
+app.post("/api/categories", authChecker, AddCategory);
+app.put("/api/categories/:id", authChecker, updateCategory);
+app.delete("/api/categories/:id", authChecker, deleteCategory);
 
 // Blogs
 app.get("/api/blogs", getBlogs);
-app.post("/api/blogs", upload.single("image"), AddBlog);
-app.put("/api/blogs/:id", upload.single("image"), updateBlog);
-app.delete("/api/blogs/:id", deleteBlog);
+app.post("/api/blogs", authChecker, upload.single("image"), AddBlog);
+app.put("/api/blogs/:id", authChecker, upload.single("image"), updateBlog);
+app.delete("/api/blogs/:id", authChecker, deleteBlog);
 
 // Education
 app.get("/api/education", getEducation);
-app.post("/api/education", AddEducation);
-app.put("/api/education/:id", updateEducation);
-app.delete("/api/education/:id", deleteEducation);
+app.post("/api/education", authChecker, AddEducation);
+app.put("/api/education/:id", authChecker, updateEducation);
+app.delete("/api/education/:id", authChecker, deleteEducation);
 
 // Contact
 app.get("/api/contact", getContact);
-app.post("/api/contact", AddContact);
+app.post("/api/contact", authChecker, AddContact);
 
 // Details
 app.get("/api/details", getDetails);
-app.post("/api/details", AddDetails);
-app.put("/api/details/:id", UpdateDetails);
-app.delete("/api/details/:id", deleteDetails);
+app.post("/api/details", authChecker, AddDetails);
+app.put("/api/details/:id", authChecker, UpdateDetails);
+app.delete("/api/details/:id", authChecker, deleteDetails);
 
 // Home
 app.get("/api/home", getHome);
-app.post("/api/home", uploadHome.single("image"), AddHome);
-app.put("/api/home/:id", uploadHome.single("image"), UpdateHome);
-app.delete("/api/home/:id", deleteHome);
+app.post("/api/home", authChecker, uploadHome.single("image"), AddHome);
+app.put("/api/home/:id", authChecker, uploadHome.single("image"), UpdateHome);
+app.delete("/api/home/:id", authChecker, deleteHome);
 
 // Testimonials
 app.get("/api/testimonials", getTestimonials);
-app.post("/api/testimonials", uploadTestimonial.single("image"), AddTestimonial);
-app.put("/api/testimonials/:id", uploadTestimonial.single("image"), UpdateTestimonial);
-app.delete("/api/testimonials/:id", deleteTestimonial);
+app.post("/api/testimonials", authChecker, uploadTestimonial.single("image"), AddTestimonial);
+app.put("/api/testimonials/:id", authChecker, uploadTestimonial.single("image"), UpdateTestimonial);
+app.delete("/api/testimonials/:id", authChecker, deleteTestimonial);
 
 // Resume
 app.get("/api/resume", getResume);
-app.post("/api/resume", uploadResume.single("pdf"), addResume);
-app.put("/api/resume/:id", uploadResume.single("pdf"), updateResume);
-app.delete("/api/resume/:id", deleteResume);
+app.post("/api/resume", authChecker, uploadResume.single("pdf"), addResume);
+app.put("/api/resume/:id", authChecker, uploadResume.single("pdf"), updateResume);
+app.delete("/api/resume/:id", authChecker, deleteResume);
 
 // Messages
 app.get("/api/messages", getMessages);
-app.post("/api/messages", uploadChat.array("file", 5), AddMessage);
+app.post("/api/messages", authChecker, uploadChat.array("file", 5), AddMessage);
 
 // API Key
-app.post("/api/save-key", Addkey);
-app.get("/api/save-key", fetchKey);
+app.post("/api/save-key", authChecker, Addkey);
+app.get("/api/save-key", authChecker, fetchKey);
 
 // ─── Start Server ─────────────────────────────────────────────────────────────
 
