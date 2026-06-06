@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const API = `${import.meta.env.VITE_URL_API}api`;
+const API = `${import.meta.env.VITE_URL_API}`;
 
 const COLORS = [
   { accent: "#8b5cf6", glow: "rgba(139,92,246,0.3)" },
@@ -17,7 +17,7 @@ export default function Skills() {
   useEffect(() => {
     const fetchSkills = async () => {
       try {
-        const res  = await fetch(`${API}/api/about`);
+        const res  = await fetch(`${API}api/about`);
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         const data = await res.json();
         if (data?.skills?.length > 0) {
