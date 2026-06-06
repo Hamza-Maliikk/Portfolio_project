@@ -5,7 +5,7 @@ const authSlice = createSlice({
     initialState: {
     token: typeof window !== "undefined"
       ? localStorage.getItem("token")
-      : null,
+      : window.location.pathname === "/login",
   },
   reducers: {
     setToken: (state, action) => {
