@@ -3,10 +3,10 @@ import { createSlice } from "@reduxjs/toolkit";
 const authSlice = createSlice({
   name: "auth",
     initialState: {
-    token: typeof window !== "undefined"
-      ? localStorage.getItem("token")
-      : window.location.pathname === "/login",
-  },
+  token: typeof window !== "undefined"
+    ? localStorage.getItem("token")
+    : null,  // ✅ Server side pe sirf null do
+},
   reducers: {
     setToken: (state, action) => {
       state.token = action.payload;

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
+import api from "../lib/api"; // ✅ axios interceptor wala
 
-const API = `${import.meta.env.VITE_URL_API}api/home`;
+const API = `home`;
 const emptyForm = { role: "", headline: "", description: "" };
 
 export default function Adminhome() {
@@ -17,11 +18,13 @@ export default function Adminhome() {
   const load = async () => {
     setLoading(true);
     try {
-      const r = await fetch(API);
-      if (!r.ok) throw new Error();
-      setEntries(await r.json());
-    } catch { flash("Could not load data.", "error"); }
-    finally { setLoading(false); }
+      const r = await api.get(API); // ✅ axios
+      setEntries(r.data);           // ✅ r.data — r.json() nahi
+    } catch { 
+      flash("Could not load data.", "error"); 
+    } finally { 
+      setLoading(false); 
+    }
   };
 
   useEffect(() => { load(); }, []);
@@ -66,6 +69,7 @@ export default function Adminhome() {
     if (!editId && !imageFile) {
       flash("Image select karo.", "error"); return;
     }
+
     setSaving(true);
     try {
       const fd = new FormData();
@@ -75,25 +79,34 @@ export default function Adminhome() {
       if (imageFile) fd.append("image", imageFile);
 
       const url    = editId ? `${API}/${editId}` : API;
-      const method = editId ? "PUT" : "POST";
-      // ⚠️ Content-Type header mat lagao — browser khud multipart set karta hai
-      const r = await fetch(url, { method, body: fd });
-      if (!r.ok) throw new Error();
+      const method = editId ? "put" : "post"; // ✅ lowercase axios ke liye
+
+      await api.request({         // ✅ axios — fetch nahi
+        method,
+        url,
+        data: fd,
+        // ✅ Content-Type mat likho — axios khud set karta hai FormData ke liye
+      });
+
       closeModal();
       flash(editId ? "Updated successfully." : "Added successfully.", "success");
       load();
-    } catch { flash("Save failed. Check server.", "error"); }
-    finally { setSaving(false); }
+    } catch { 
+      flash("Save failed. Check server.", "error"); 
+    } finally { 
+      setSaving(false); 
+    }
   };
 
   const handleDelete = async (id) => {
     if (!window.confirm("Delete this entry?")) return;
     try {
-      const r = await fetch(`${API}/${id}`, { method: "DELETE" });
-      if (!r.ok) throw new Error();
+      await api.delete(`${API}/${id}`); // ✅ axios — r.ok check nahi chahiye
       flash("Deleted.", "success");
       load();
-    } catch { flash("Delete failed.", "error"); }
+    } catch { 
+      flash("Delete failed.", "error"); 
+    }
   };
 
   return (

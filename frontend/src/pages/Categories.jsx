@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../lib/api"; // ✅ axios interceptor wala
+
+const BASE = `categories`; // ✅ baseURL interceptor mein already hai
 
 const Categories = () => {
   const canCrud = Boolean(localStorage.getItem("token"));
@@ -17,9 +19,8 @@ const Categories = () => {
   const fetchCategories = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`${import.meta.env.VITE_URL_API}api/categories`);
-      console.log("Categories fetched:", res.data);
-      setCategories(res.data);
+      const res = await api.get(BASE);
+      setCategories(res.data);        
     } catch (err) {
       console.error("Categories fetch nahi hoi:", err);
     } finally {
@@ -31,12 +32,10 @@ const Categories = () => {
     if (!form.category) return alert("Category name zaroor bharo!");
     try {
       if (editId) {
-        await axios.put(`http://localhost:8000/api/categories/${editId}`, form, {
-          headers: { "Content-Type": "application/json" },
-        });
+        await api.put(`${BASE}/${editId}`, form); 
         setEditId(null);
       } else {
-        await axios.post("http://localhost:8000/api/categories", form);
+        await api.post(BASE, form); 
       }
       setForm({ category: "", description: "" });
       setShowForm(false);
@@ -57,7 +56,7 @@ const Categories = () => {
   const handleDelete = async (id) => {
     if (!window.confirm("Delete karna hai?")) return;
     try {
-      await axios.delete(`http://localhost:8000/api/categories/${id}`);
+      await api.delete(`${BASE}/${id}`); // ✅ axios
       fetchCategories();
     } catch (err) {
       console.error(err);

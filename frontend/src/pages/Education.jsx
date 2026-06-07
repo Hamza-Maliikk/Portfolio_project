@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
+import api from "../lib/api";
 
 const Education = () => {
   const canCrud = Boolean(localStorage.getItem("token"));
@@ -13,7 +14,7 @@ const Education = () => {
 
 
   const fetchEducation = async () => {
-    const res = await axios.get(`${import.meta.env.VITE_URL_API}api/education`);
+    const res = await api.get(`${import.meta.env.VITE_URL_API}api/education`);
     setEducations(res.data);
   };
   useEffect(() => {
@@ -49,11 +50,12 @@ const Education = () => {
     }
 
     if (editId) {
-      await axios.put(`http://localhost:8000/api/education/${editId}`, cleanedRows[0]);
+
+      await api.put(`education/${editId}`, cleanedRows[0]); 
       setEditId(null);
     } else {
       await Promise.all(
-        cleanedRows.map((row) => axios.post("http://localhost:8000/api/education", row))
+        cleanedRows.map((row) => api.post("education", row))
       );
     }
     setRows([{ ...emptyRow }]);
@@ -75,7 +77,7 @@ const Education = () => {
 
   // Delete
   const handleDelete = async (id) => {
-    await axios.delete(`http://localhost:8000/api/education/${id}`);
+    await api.delete(`education/${id}`);
     fetchEducation();
   };
 

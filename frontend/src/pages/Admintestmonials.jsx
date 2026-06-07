@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import api  from '../lib/api';
 
-const API = `${import.meta.env.VITE_URL_API}api/testimonials`;
+const API = `testimonials`;
 
 const AdminTestimonials = () => {
   const [testimonials, setTestimonials] = useState([]);
@@ -16,8 +17,8 @@ const AdminTestimonials = () => {
 
   const fetchAll = async () => {
     try {
-      const r = await fetch(API);
-      const data = await r.json();
+      const r = await api.get(API);
+      const data = await r.data;
       setTestimonials(data);
     } catch (e) {
       showToast('Could not connect to server', 'error', e);
@@ -57,49 +58,51 @@ const AdminTestimonials = () => {
     setImagePreview(URL.createObjectURL(file));
   };
 
-  const handleSave = async () => {
-    if (!form.name || !form.username || !form.description) {
-      showToast('Please fill all fields', 'error');
-      return;
+const handleSave = async () => {
+  if (!form.name || !form.username || !form.description) {
+    showToast('Please fill all fields', 'error');
+    return;
+  }
+  try {
+    const url = editingId ? `${API}/${editingId}` : API;
+    const method = editingId ? 'put' : 'post'; // ✅ lowercase
+
+    const formData = new FormData();
+    formData.append('name', form.name);
+    formData.append('username', form.username);
+    formData.append('description', form.description);
+    if (imageFile) {
+      formData.append('image', imageFile);
     }
-    try {
-      const url = editingId ? `${API}/${editingId}` : API;
-      const method = editingId ? 'PUT' : 'POST';
 
-      // ← FormData use karo image ke liye
-      const formData = new FormData();
-      formData.append('name', form.name);
-      formData.append('username', form.username);
-      formData.append('description', form.description);
-      if (imageFile) {
-        formData.append('image', imageFile);
-      }
+    await api.request({
+      method,
+      url,
+      data: formData,
+      headers: {
+        'Content-Type': 'multipart/form-data', // ✅ image ke liye zaroori
+      },
+    });
 
-      const r = await fetch(url, {
-        method,
-        body: formData,  // ← Content-Type header mat lagao, browser khud lagata hai
-      });
-      if (!r.ok) throw new Error();
-      showToast(editingId ? 'Updated successfully!' : 'Added successfully!', 'success');
-      closeModal();
-      fetchAll();
-    } catch (e) {
-      showToast('Something went wrong', 'error', e);
-    }
-  };
+    // ✅ r.ok hata diya — axios khud error throw karta hai
+    showToast(editingId ? 'Updated successfully!' : 'Added successfully!', 'success');
+    closeModal();
+    fetchAll();
+  } catch (e) {
+    showToast('Something went wrong', 'error');
+  }
+};
 
-  const handleDelete = async (id) => {
-    if (!window.confirm('Delete this testimonial?')) return;
-    try {
-      const r = await fetch(`${API}/${id}`, { method: 'DELETE' });
-      if (!r.ok) throw new Error();
-      showToast('Deleted!', 'success');
-      fetchAll();
-    } catch (e) {
-      showToast('Could not delete', 'error', e);
-    }
-  };
-
+const handleDelete = async (id) => {
+  if (!window.confirm('Delete this testimonial?')) return;
+  try {
+    await api.delete(`${API}/${id}`);
+    showToast('Deleted!', 'success');
+    fetchAll();
+  } catch (e) {
+    showToast('Could not delete', 'error');
+  }
+};
   return (
     <div style={styles.page}>
       {/* Header */}

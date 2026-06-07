@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
+import api from "../lib/api"; // ✅ axios interceptor wala
 
-const API = `${import.meta.env.VITE_URL_API}api/resume`;
+const API = `resume`; // ✅ baseURL interceptor mein already hai
 
 export default function AdminResume() {
   const [resumes, setResumes] = useState([]);
@@ -14,9 +15,8 @@ export default function AdminResume() {
   const load = async () => {
     setLoading(true);
     try {
-      const r = await fetch(API);
-      if (!r.ok) throw new Error();
-      setResumes(await r.json());
+      const r = await api.get(API); // ✅ axios
+      setResumes(r.data);           // ✅ r.data — r.json() nahi
     } catch {
       flash("Could not load resumes.", "error");
     } finally {
@@ -24,9 +24,7 @@ export default function AdminResume() {
     }
   };
 
-  useEffect(() => {
-    load();
-  }, []);
+  useEffect(() => { load(); }, []);
 
   const flash = (msg, type) => {
     setStatus({ msg, type });
@@ -62,17 +60,20 @@ export default function AdminResume() {
     setSaving(true);
     try {
       const fd = new FormData();
-      if (file) fd.append("pdf", file); // Must match backend `.single('pdf')`
+      if (file) fd.append("pdf", file);
 
-      const url = editId ? `${API}/${editId}` : API;
-      const method = editId ? "PUT" : "POST";
-      const r = await fetch(url, { method, body: fd });
-      if (!r.ok) throw new Error();
+      const url    = editId ? `${API}/${editId}` : API;
+      const method = editId ? "put" : "post"; // ✅ lowercase
+
+      await api.request({  // ✅ fetch() ki jagah axios
+        method,
+        url,
+        data: fd,
+        // ✅ Content-Type mat likho — axios khud set karta hai
+      });
+
       closeModal();
-      flash(
-        editId ? "Resume updated successfully." : "Resume added successfully.",
-        "success",
-      );
+      flash(editId ? "Resume updated successfully." : "Resume added successfully.", "success");
       load();
     } catch {
       flash("Save failed. Check server.", "error");
@@ -84,8 +85,7 @@ export default function AdminResume() {
   const handleDelete = async (id) => {
     if (!window.confirm("Delete this resume?")) return;
     try {
-      const r = await fetch(`${API}/${id}`, { method: "DELETE" });
-      if (!r.ok) throw new Error();
+      await api.delete(`${API}/${id}`); // ✅ axios — r.ok nahi chahiye
       flash("Deleted.", "success");
       load();
     } catch {
