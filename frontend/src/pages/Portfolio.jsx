@@ -1,6 +1,7 @@
 import { useMemo, useState, useEffect } from "react";
+import api from "../lib/api"; // ✅ axios interceptor wala
 
-const API = `${import.meta.env.VITE_URL_API}api`;
+const API = `about`; // ✅ baseURL interceptor mein already hai
 
 const DEFAULT_ABOUT = "I am a full-stack web developer focused on building clean, reliable, and user-friendly applications.";
 
@@ -25,8 +26,8 @@ export default function Portfolio() {
   useEffect(() => {
     const fetchAbout = async () => {
       try {
-        const res  = await fetch(`${API}/api/about`);
-        const data = await res.json();
+        const res  = await api.get(`${API}`); // ✅ axios — double /api/about bug fix
+        const data = res.data;                       // ✅ res.data
         if (data && data.intro) {
           setAbout(data.intro);
           setAboutDraft(data.intro);
@@ -51,30 +52,16 @@ export default function Portfolio() {
       let res;
 
       if (!aboutId) {
-        // ✅ Pehli baar — POST se create karo
-        res = await fetch(`${API}/api/about`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          body: JSON.stringify({ intro: next, skills }),
-        });
+        // ✅ Pehli baar — POST
+        res = await api.post(`${API}/about`, { intro: next, skills });
       } else {
-        // ✅ Already exist karta hai — PUT se update karo
-        res = await fetch(`${API}/api/about/${aboutId}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          body: JSON.stringify({ intro: next, skills }),
-        });
+        // ✅ Already exist karta hai — PUT
+        res = await api.put(`${API}/about/${aboutId}`, { intro: next, skills });
       }
 
-      const data = await res.json();
-      setAbout(data.data.intro);
-      setAboutId(data.data._id); // ✅ naya _id bhi set karo (POST ke baad)
+      // ✅ res.data — r.json() nahi, token interceptor se automatic
+      setAbout(res.data.data.intro);
+      setAboutId(res.data.data._id);
       setEditingAbout(false);
     } catch (err) {
       console.error("About save error:", err);
@@ -87,13 +74,9 @@ export default function Portfolio() {
   const saveSkillsToDB = async (updatedSkills) => {
     if (!aboutId) return;
     try {
-      await fetch(`${API}/api/about/${aboutId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify({ intro: about, skills: updatedSkills }),
+      await api.put(`${API}/about/${aboutId}`, { // ✅ axios
+        intro: about,
+        skills: updatedSkills,
       });
     } catch (err) {
       console.error("Skills save error:", err);
@@ -112,12 +95,7 @@ export default function Portfolio() {
   const removeSkill = async (idx) => {
     const skillToDelete = skills[idx];
     try {
-      await fetch(`${API}/api/about/skill/${skillToDelete}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      await api.delete(`${API}/about/skill/${skillToDelete}`); // ✅ axios
       setSkills(skills.filter((_, i) => i !== idx));
     } catch (err) {
       console.error("Skill delete error:", err);
@@ -171,7 +149,6 @@ export default function Portfolio() {
                 <p>Hi, I am {displayName}. {about}</p>
                 {canCrud && (
                   <div className="inline">
-                    {/* ✅ aboutId nahi hai → "Create" button, hai → "Edit" button */}
                     <button className="btn" onClick={() => { setEditingAbout(true); setAboutDraft(about); }}>
                       {!aboutId ? "Create Intro" : "Edit Intro"}
                     </button>
