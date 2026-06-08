@@ -53,10 +53,10 @@ export default function Portfolio() {
 
       if (!aboutId) {
         // ✅ Pehli baar — POST
-        res = await api.post(`${API}/about`, { intro: next, skills });
+        res = await api.post(`${API}`, { intro: next, skills });
       } else {
         // ✅ Already exist karta hai — PUT
-        res = await api.put(`${API}/about/${aboutId}`, { intro: next, skills });
+        res = await api.put(`${API}/${aboutId}`, { intro: next, skills });
       }
 
       // ✅ res.data — r.json() nahi, token interceptor se automatic
@@ -74,7 +74,7 @@ export default function Portfolio() {
   const saveSkillsToDB = async (updatedSkills) => {
     if (!aboutId) return;
     try {
-      await api.put(`${API}/about/${aboutId}`, { // ✅ axios
+      await api.put(`${API}/${aboutId}`, { // ✅ axios
         intro: about,
         skills: updatedSkills,
       });
@@ -93,14 +93,10 @@ export default function Portfolio() {
   };
 
   const removeSkill = async (idx) => {
-    const skillToDelete = skills[idx];
-    try {
-      await api.delete(`${API}/about/skill/${skillToDelete}`); // ✅ axios
-      setSkills(skills.filter((_, i) => i !== idx));
-    } catch (err) {
-      console.error("Skill delete error:", err);
-    }
-  };
+  const updatedSkills = skills.filter((_, i) => i !== idx); 
+  setSkills(updatedSkills);                                  
+  await saveSkillsToDB(updatedSkills);                       
+};
 
   return (
     <>
