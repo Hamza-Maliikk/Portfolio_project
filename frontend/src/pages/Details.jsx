@@ -5,12 +5,12 @@ import api from "../lib/api";
 const API = `details`;
 const emptyForm = { name: "", role: "", email: "", phone: "", location: "" };
 
-const InfoRow = ({ icon: Icon, label, value, purple }) => (
+const InfoRow = ({ icon: Icon, label, value }) => (
   <div className="d-info-row">
-    <div className="d-info-icon"><Icon size={14} color="#a78bfa" /></div>
+    <div className="d-info-icon"><Icon size={14} color="#e5e5e5" /></div>
     <div>
       <p className="d-info-label">{label}</p>
-      <p className={`d-info-val ${purple ? "d-purple" : ""}`}>{value}</p>
+      <p className="d-info-val">{value}</p>
     </div>
   </div>
 );
@@ -162,7 +162,7 @@ export default function Details() {
           <>
             <div className="d-empty-card">
               <div className="d-empty-icon">
-                <MapPin size={20} color="#a78bfa" />
+                <MapPin size={20} color="#e5e5e5" />
               </div>
               <p className="d-empty-title">No record found</p>
               <p className="d-empty-sub">Add your contact details to get started.</p>
@@ -221,7 +221,7 @@ export default function Details() {
               </div>
 
               <div className="d-info-list">
-                <InfoRow icon={Mail}   label="Email"    value={data?.email}    purple />
+                <InfoRow icon={Mail}   label="Email"    value={data?.email} />
                 <InfoRow icon={Phone}  label="Phone"    value={data?.phone} />
                 <InfoRow icon={MapPin} label="Location" value={data?.location} />
               </div>
@@ -265,28 +265,47 @@ const styles = `
 
   .d-page {
     min-height: 100vh;
-    background: #0d0d0f;
-    display: flex; flex-direction: column;
-    align-items: center; padding: 2rem 1rem; gap: 1rem;
+    background: #09090c;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2.5rem 1rem 3rem;
+    gap: 1rem;
     font-family: 'Poppins', sans-serif;
+    color: #ececec;
   }
   .d-topbar {
-    width: 100%; max-width: 480px;
-    display: flex; align-items: center; justify-content: space-between;
+    width: 100%;
+    max-width: 950px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
   }
   .d-topbar-title {
     font-family: 'Fraunces', serif;
-    font-size: 1.4rem; font-weight: 500;
-    color: #f0ede8; letter-spacing: -0.02em;
+    font-size: clamp(1.7rem, 2vw, 2.2rem);
+    margin: 0;
+    color: #ececec;
   }
   .d-add-btn {
-    display: flex; align-items: center; gap: 6px;
-    padding: 8px 16px; border-radius: 8px; border: none;
-    background: #f0c040; color: #000;
-    font-size: 12px; font-weight: 600; cursor: pointer;
-    transition: opacity 0.2s;
+    border: 1px solid #444;
+    background: #262626;
+    color: #eee;
+    border-radius: 10px;
+    padding: 10px 16px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
   }
-  .d-add-btn:hover { opacity: 0.85; }
+  .d-add-btn:hover {
+    background: #333;
+    border-color: #555;
+  }
 
   /* ── Card ── */
   .d-card {
@@ -303,7 +322,7 @@ const styles = `
   .d-avatar-wrap { padding: 0 1.5rem; margin-top: -28px; }
   .d-avatar {
     width: 56px; height: 56px; border-radius: 50%;
-    background: #f0c040; color: #000;
+    background: #ececec; color: #111;
     font-size: 18px; font-weight: 700;
     display: flex; align-items: center; justify-content: center;
     border: 3px solid #16161a;
@@ -316,124 +335,132 @@ const styles = `
   .d-name { font-size: 18px; font-weight: 600; color: #f0ede8; margin: 0 0 5px; }
   .d-badge {
     display: inline-block;
-    background: rgba(240,192,64,0.12);
-    color: #f0c040;
+    background: rgba(255,255,255,0.08);
+    color: #ececec;
     font-size: 11px; font-weight: 500;
-    padding: 2px 10px; border-radius: 20px;
-    border: 1px solid rgba(240,192,64,0.25);
+    padding: 4px 12px; border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.12);
   }
-  .d-icon-btns { display: flex; gap: 6px; margin-top: 3px; }
+  .d-icon-btns { display: flex; gap: 8px; margin-top: 4px; }
   .d-icon-btn {
-    width: 32px; height: 32px; border-radius: 8px;
-    border: 1px solid #2a2a35; background: #1e1e24;
+    width: 36px; height: 36px; border-radius: 10px;
+    border: 1px solid #2f2f2f; background: #1f1f23;
     display: flex; align-items: center; justify-content: center;
-    cursor: pointer; color: #6b6b80; transition: all 0.15s;
+    cursor: pointer; color: #a3a3a3; transition: background 0.2s, border-color 0.2s, color 0.2s;
   }
-  .d-icon-edit:hover { background: rgba(240,192,64,0.1); border-color: #f0c040; color: #f0c040; }
-  .d-icon-del:hover  { background: rgba(224,92,58,0.1);  border-color: #e05c3a; color: #e05c3a; }
+  .d-icon-edit:hover { background: rgba(255,255,255,0.08); border-color: #ececec; color: #ececec; }
+  .d-icon-del:hover { background: rgba(239,68,68,0.12); border-color: #ef4444; color: #ef4444; }
 
   /* ── Info rows ── */
-  .d-info-list { display: flex; flex-direction: column; }
+  .d-info-list { display: flex; flex-direction: column; gap: 0.8rem; }
   .d-info-row {
-    display: flex; align-items: center; gap: 12px;
-    padding: 10px 0; border-bottom: 1px solid #2a2a35;
+    display: flex; align-items: center; gap: 14px;
+    padding: 12px 0; border-bottom: 1px solid #2f2f2f;
   }
   .d-info-row:last-child { border-bottom: none; }
   .d-info-icon {
-    width: 34px; height: 34px; border-radius: 8px;
-    background: #1e1e24; border: 1px solid #2a2a35;
+    width: 38px; height: 38px; border-radius: 12px;
+    background: #1f1f23; border: 1px solid #2f2f2f;
     display: flex; align-items: center; justify-content: center; flex-shrink: 0;
   }
   .d-info-label {
-    font-size: 10px; color: #6b6b80;
-    text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 2px;
+    font-size: 0.72rem; color: #8b8b8b;
+    text-transform: uppercase; letter-spacing: 0.1em; margin: 0 0 2px;
   }
-  .d-info-val { font-size: 13px; color: #f0ede8; font-weight: 500; margin: 0; }
-  .d-purple { color: #a78bfa; }
+  .d-info-val { font-size: 0.95rem; color: #ececec; font-weight: 500; margin: 0; }
+  .d-purple { color: #ececec; }
 
   /* ── Panel (form / delete) ── */
-  .d-panel { padding: 1.25rem 1.5rem; border-top: 1px solid #2a2a35; }
-  .d-del-panel { background: rgba(224,92,58,0.05); border-color: rgba(224,92,58,0.2); }
-  .d-panel-title { font-size: 13px; font-weight: 600; color: #f0ede8; margin: 0 0 1rem; }
+  .d-panel { padding: 1.35rem 1.5rem; border-top: 1px solid #2f2f2f; }
+  .d-del-panel { background: rgba(239,68,68,0.06); border-color: rgba(239,68,68,0.18); }
+  .d-panel-title { font-size: 0.95rem; font-weight: 600; color: #ececec; margin: 0 0 1rem; }
 
   /* ── Form fields ── */
-  .d-fields { display: flex; flex-direction: column; gap: 10px; }
-  .d-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .d-field { display: flex; flex-direction: column; gap: 4px; }
+  .d-fields { display: flex; flex-direction: column; gap: 1rem; }
+  .d-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .d-field { display: flex; flex-direction: column; gap: 0.4rem; }
   .d-field-label {
-    font-size: 10px; color: #6b6b80;
-    text-transform: uppercase; letter-spacing: 0.06em;
+    font-size: 0.75rem; color: #8b8b8b;
+    text-transform: uppercase; letter-spacing: 0.08em;
   }
   .d-input {
-    padding: 8px 12px; border-radius: 8px;
-    border: 1px solid #2a2a35; background: #1e1e24;
-    color: #f0ede8; font-size: 13px; outline: none;
+    padding: 0.95rem 1rem; border-radius: 10px;
+    border: 1px solid #333; background: #1f1f23;
+    color: #ececec; font-size: 0.95rem; outline: none;
     font-family: 'Poppins', sans-serif;
-    transition: border-color 0.2s;
+    transition: border-color 0.2s, box-shadow 0.2s;
     width: 100%; box-sizing: border-box;
   }
-  .d-input:focus { border-color: #f0c040; box-shadow: 0 0 0 2px rgba(240,192,64,0.1); }
+  .d-input:focus {
+    border-color: #bdbdbd;
+    box-shadow: 0 0 0 2px rgba(255,255,255,0.12);
+  }
 
   /* ── Buttons ── */
-  .d-btn-row { display: flex; gap: 8px; justify-content: flex-end; margin-top: 1rem; }
-  .d-btn-ghost {
-    padding: 7px 16px; border-radius: 8px;
-    border: 1px solid #2a2a35; background: transparent;
-    color: #6b6b80; font-size: 12px; cursor: pointer;
-    font-family: 'Poppins', sans-serif; transition: all 0.2s;
+  .d-btn-row { display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1.25rem; flex-wrap: wrap; }
+  .d-btn-ghost,
+  .d-add-btn {
+    border: 1px solid #444;
+    background: #262626;
+    color: #eee;
+    border-radius: 10px;
+    padding: 10px 16px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
   }
-  .d-btn-ghost:hover { border-color: #f0ede8; color: #f0ede8; }
+  .d-btn-ghost:hover,
+  .d-add-btn:hover {
+    background: #333;
+    border-color: #555;
+  }
   .d-btn-solid {
-    padding: 7px 18px; border-radius: 8px; border: none;
-    background: #f0c040; color: #000;
-    font-size: 12px; font-weight: 600; cursor: pointer;
-    font-family: 'Poppins', sans-serif; transition: opacity 0.2s;
+    padding: 10px 18px; border-radius: 10px; border: none;
+    background: #ececec; color: #111;
+    font-size: 0.88rem; font-weight: 600; cursor: pointer;
+    transition: background 0.2s, opacity 0.2s;
   }
-  .d-btn-solid:hover { opacity: 0.85; }
+  .d-btn-solid:hover { background: #ffffff; }
   .d-btn-danger {
-    padding: 7px 18px; border-radius: 8px; border: none;
-    background: #e05c3a; color: #fff;
-    font-size: 12px; font-weight: 600; cursor: pointer;
-    font-family: 'Poppins', sans-serif; transition: opacity 0.2s;
+    padding: 10px 18px; border-radius: 10px; border: none;
+    background: #ef4444; color: #fff;
+    font-size: 0.88rem; font-weight: 600; cursor: pointer;
+    transition: opacity 0.2s;
   }
-  .d-btn-danger:hover { opacity: 0.85; }
-  .d-del-msg { font-size: 13px; color: #e05c3a; line-height: 1.6; margin: 0; }
+  .d-btn-danger:hover { opacity: 0.9; }
+  .d-del-msg { font-size: 0.95rem; color: #fbcaca; line-height: 1.6; margin: 0; }
 
   /* ── Empty state ── */
   .d-empty-card {
-    background: #16161a; border: 1px solid #2a2a35;
-    border-radius: 16px; width: 100%; max-width: 480px;
-    padding: 2.5rem 2rem; text-align: center;
+    padding: 2.5rem 2rem;
+    text-align: center;
   }
   .d-empty-icon {
     width: 48px; height: 48px; border-radius: 50%;
-    background: #1e1e24; border: 1px solid #2a2a35;
+    background: #1f1f23; border: 1px solid #2f2f2f;
     display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;
   }
-  .d-empty-title { font-size: 15px; font-weight: 600; color: #f0ede8; margin: 0 0 6px; }
-  .d-empty-sub { font-size: 12px; color: #6b6b80; margin: 0 0 1.5rem; }
+  .d-empty-title { font-size: 1rem; font-weight: 600; color: #ececec; margin: 0 0 8px; }
+  .d-empty-sub { font-size: 0.95rem; color: #8b8b8b; margin: 0 0 1.5rem; }
 
   /* ── Loading ── */
-  .d-status-card {
-    background: #16161a; border: 1px solid #2a2a35;
-    border-radius: 16px; width: 100%; max-width: 480px;
-    padding: 3rem 2rem; text-align: center;
-  }
+  .d-status-card { padding: 3rem 2rem; text-align: center; }
   .d-spinner {
     width: 28px; height: 28px; border-radius: 50%;
-    border: 2px solid #2a2a35; border-top-color: #f0c040;
+    border: 2px solid #2f2f2f; border-top-color: #ececec;
     animation: spin 0.7s linear infinite; margin: 0 auto 1rem;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
-  .d-status-text { font-size: 13px; color: #6b6b80; }
+  .d-status-text { font-size: 0.92rem; color: #8b8b8b; }
 
   /* ── Toast ── */
   .d-toast {
-    background: #16161a; color: #f0ede8;
-    border: 1px solid #f0c040;
-    font-size: 12px; padding: 8px 18px; border-radius: 8px;
+    background: #181818; color: #ececec;
+    border: 1px solid #ececec;
+    font-size: 0.88rem; padding: 10px 18px; border-radius: 10px;
     position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.4); z-index: 1000;
+    box-shadow: 0 16px 40px rgba(0,0,0,0.35); z-index: 1000;
   }
-  .d-toast-err { border-color: #e05c3a; color: #e05c3a; }
+  .d-toast-err { border-color: #ef4444; color: #ef4444; }
 `;

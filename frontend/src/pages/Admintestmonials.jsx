@@ -234,7 +234,7 @@ const handleDelete = async (id) => {
 
       {/* Toast */}
       {toast.msg && (
-        <div style={{ ...styles.toast, borderColor: toast.type === 'success' ? '#f0c040' : '#e05c3a', color: toast.type === 'success' ? '#f0c040' : '#e05c3a' }}>
+        <div style={{ ...styles.toast, borderColor: toast.type === 'success' ? '#ececec' : '#e05c3a', color: toast.type === 'success' ? '#ececec' : '#e05c3a' }}>
           {toast.msg}
         </div>
       )}
@@ -245,9 +245,21 @@ const handleDelete = async (id) => {
 const styles = {
   page: { padding: '32px 24px', background: '#0d0d0f', minHeight: '100vh', color: '#f0ede8', fontFamily: 'DM Sans, sans-serif' },
   header: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '32px', flexWrap: 'wrap', gap: '16px' },
-  title: { fontSize: '2rem', fontWeight: 800, marginBottom: '4px' },
+  title: { fontSize: '2rem', fontWeight: 800, marginBottom: '4px', color: '#ffff'},
   subtitle: { color: '#6b6b80', fontSize: '.9rem' },
-  btnAdd: { background: '#f0c040', color: '#000', padding: '10px 20px', borderRadius: '8px', fontWeight: 600, border: 'none', cursor: 'pointer' },
+  btnAdd: {
+    border: '1px solid #444',
+    background: '#262626',
+    color: '#eee',
+    borderRadius: '8px',
+    padding: '10px 18px',
+    cursor: 'pointer',
+    fontSize: '.95rem',
+    fontWeight: 600,
+    minHeight: '40px',
+    whiteSpace: 'nowrap',
+    transition: 'background .15s ease, transform .15s ease',
+  },
   tableWrap: { background: '#16161a', border: '1px solid #2a2a35', borderRadius: '12px', overflow: 'hidden' },
   table: { width: '100%', borderCollapse: 'collapse' },
   thead: { background: '#1e1e24' },
@@ -256,12 +268,31 @@ const styles = {
   td: { padding: '14px 16px', fontSize: '.88rem', verticalAlign: 'middle' },
   center: { textAlign: 'center', padding: '32px', color: '#6b6b80' },
   nameCell: { display: 'flex', alignItems: 'center', gap: '12px' },
-  avatar: { width: '40px', height: '40px', borderRadius: '50%', background: '#f0c040', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '.9rem', color: '#000' },
+  avatar: { width: '40px', height: '40px', borderRadius: '50%', background: '#ececec', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '.9rem', color: '#111' },
   name: { fontWeight: 500 },
   username: { fontSize: '.78rem', color: '#6b6b80' },
   descCell: { maxWidth: '220px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: '#6b6b80' },
-  btnEdit: { background: '#1e1e24', color: '#f0ede8', padding: '6px 14px', borderRadius: '6px', marginRight: '6px', border: 'none', cursor: 'pointer' },
-  btnDel: { background: 'rgba(224,92,58,.15)', color: '#e05c3a', padding: '6px 14px', borderRadius: '6px', border: 'none', cursor: 'pointer' },
+  btnEdit: {
+    background: '#1e1e24',
+    color: '#f0ede8',
+    padding: '10px 18px',
+    borderRadius: '8px',
+    marginRight: '6px',
+    border: 'none',
+    cursor: 'pointer',
+    fontSize: '.95rem',
+    minHeight: '40px',
+  },
+  btnDel: {
+    background: 'rgba(255,255,255,0.08)',
+    color: '#eee',
+    padding: '10px 18px',
+    borderRadius: '8px',
+    border: '1px solid #2a2a35',
+    cursor: 'pointer',
+    fontSize: '.95rem',
+    minHeight: '40px',
+  },
   overlay: { position: 'fixed', inset: 0, background: 'rgba(0,0,0,.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100 },
   modal: { background: '#16161a', border: '1px solid #2a2a35', borderRadius: '16px', padding: '32px', width: '100%', maxWidth: '480px' },
   modalTitle: { fontSize: '1.3rem', fontWeight: 700, marginBottom: '24px' },
@@ -271,8 +302,27 @@ const styles = {
   // ← New upload box style
   uploadBox: { display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 4, width: '100%', padding: '20px', background: '#1e1e24', border: '1.5px dashed #2a2a35', borderRadius: '10px', cursor: 'pointer', transition: 'border-color .2s' },
   modalActions: { display: 'flex', gap: '10px', marginTop: '24px', justifyContent: 'flex-end' },
-  btnCancel: { background: '#1e1e24', color: '#6b6b80', padding: '10px 18px', borderRadius: '8px', border: 'none', cursor: 'pointer' },
-  btnSave: { background: '#f0c040', color: '#000', padding: '10px 22px', borderRadius: '8px', fontWeight: 600, border: 'none', cursor: 'pointer' },
+  btnCancel: {
+    background: '#1e1e24',
+    color: '#6b6b80',
+    padding: '10px 18px',
+    borderRadius: '8px',
+    border: 'none',
+    cursor: 'pointer',
+    fontSize: '.95rem',
+    minHeight: '40px',
+  },
+  btnSave: {
+    background: '#ececec',
+    color: '#111',
+    padding: '10px 18px',
+    borderRadius: '8px',
+    fontWeight: 600,
+    border: 'none',
+    cursor: 'pointer',
+    fontSize: '.95rem',
+    minHeight: '40px',
+  },
   toast: { position: 'fixed', bottom: '24px', right: '24px', background: '#16161a', border: '1px solid', borderRadius: '10px', padding: '12px 20px', fontSize: '.85rem', zIndex: 999 },
 };
 

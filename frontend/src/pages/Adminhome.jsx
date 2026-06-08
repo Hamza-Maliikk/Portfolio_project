@@ -123,14 +123,13 @@ export default function Adminhome() {
         .ah-desc { font-size: 0.82rem; color: #888; line-height: 1.6; margin-bottom: 10px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
         .ah-actions { display: flex; gap: 6px; }
 
-        .ah-btn { border: 1px solid #444; background: #262626; color: #eee; border-radius: 8px; padding: 5px 10px; cursor: pointer; font-size: 12px; font-family: 'Poppins', sans-serif; transition: background 0.2s, border-color 0.2s; }
+        .ah-btn { border: 1px solid #444; background: #262626; color: #eee; border-radius: 8px; padding: 8px 15px; cursor: pointer; font-size: 0.70rem; font-family: 'Poppins', sans-serif; transition: background 0.2s, border-color 0.2s; min-height: 40px; }
         .ah-btn:hover:not(:disabled) { background: #333; border-color: #555; }
         .ah-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-        .ah-btn.del:hover { background: rgba(239,68,68,0.1); border-color: #ef4444; color: #ef4444; }
         .ah-btn.primary { background: #e6e6e6; border-color: #e6e6e6; color: #111; font-weight: 500; }
         .ah-btn.primary:hover:not(:disabled) { background: #fff; border-color: #fff; }
 
-        .ah-add-btn { border: 1px solid #444; background: #262626; color: #eee; border-radius: 8px; padding: 6px 14px; cursor: pointer; font-size: 0.82rem; font-family: 'Poppins', sans-serif; transition: background 0.2s; white-space: nowrap; }
+        .ah-add-btn { border: 1px solid #444; background: #262626; color: #eee; border-radius: 8px; padding: 10px 18px; cursor: pointer; font-size: 0.70rem; font-family: 'Poppins', sans-serif; transition: background 0.2s; white-space: nowrap; min-height: 40px; }
         .ah-add-btn:hover { background: #333; }
 
         .ah-loading { color: #666; font-size: 0.85rem; padding: 2rem 0; }

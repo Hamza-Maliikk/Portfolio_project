@@ -104,12 +104,12 @@ export default function AdminResume() {
         .ar-card-name { font-weight: 500; font-size: 0.92rem; color: #ececec; margin: 0 0 2px; }
         .ar-card-date { font-size: 0.78rem; color: #666; margin: 0; }
         .ar-card-actions { display: flex; gap: 6px; }
-        .ar-btn { border: 1px solid #444; background: #262626; color: #eee; border-radius: 8px; padding: 5px 10px; cursor: pointer; font-size: 12px; font-family: 'Poppins', sans-serif; transition: background 0.2s, border-color 0.2s; text-decoration: none; display: inline-flex; align-items: center; }
+        .ar-btn { border: 1px solid #444; background: #262626; color: #eee; border-radius: 8px; padding: 10px 18px; cursor: pointer; font-size: 0.75rem; font-family: 'Poppins', sans-serif; transition: background 0.2s, border-color 0.2s; text-decoration: none; display: inline-flex; align-items: center; min-height: 40px; }
         .ar-btn:hover { background: #333; border-color: #555; }
-        .ar-btn.del:hover { background: rgba(239,68,68,0.1); border-color: #ef4444; color: #ef4444; }
+        // .ar-btn.del:hover { background: rgba(239,68,68,0.1);}
         .ar-loading { color: #666; font-size: 0.85rem; padding: 2rem 0; }
         .ar-empty { color: #666; font-size: 0.85rem; padding: 2rem 0; }
-        .ar-add-btn { border: 1px solid #444; background: #262626; color: #eee; border-radius: 8px; padding: 6px 14px; cursor: pointer; font-size: 0.82rem; font-family: 'Poppins', sans-serif; transition: background 0.2s; white-space: nowrap; }
+        .ar-add-btn { border: 1px solid #444; background: #262626; color: #eee; border-radius: 8px; padding: 10px 18px; cursor: pointer; font-size: 0.95rem; font-family: 'Poppins', sans-serif; transition: background 0.2s; white-space: nowrap; min-height: 40px; }
         .ar-add-btn:hover { background: #333; }
         .ar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 999; padding: 1rem; }
         .ar-modal { background: #181818; border: 1px solid #2f2f2f; border-radius: 12px; padding: 1.5rem; width: 100%; max-width: 420px; }
@@ -122,9 +122,9 @@ export default function AdminResume() {
         .ar-upload-text { font-size: 0.82rem; color: #888; }
         .ar-upload-name { font-size: 0.78rem; color: #ccc; margin-top: 8px; background: #252525; border: 1px solid #3a3a3a; border-radius: 6px; padding: 4px 8px; display: inline-block; word-break: break-all; }
         .ar-modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 1.2rem; }
-        .ar-modal-cancel { border: 1px solid #3a3a3a; background: transparent; color: #888; border-radius: 8px; padding: 7px 14px; font-size: 0.82rem; font-family: 'Poppins', sans-serif; cursor: pointer; transition: background 0.2s; }
+        .ar-modal-cancel { border: 1px solid #3a3a3a; background: transparent; color: #888; border-radius: 8px; padding: 10px 18px; font-size: 0.95rem; font-family: 'Poppins', sans-serif; cursor: pointer; transition: background 0.2s; min-height: 40px; }
         .ar-modal-cancel:hover { background: #222; }
-        .ar-modal-save { border: none; background: #e6e6e6; color: #111; border-radius: 8px; padding: 7px 16px; font-size: 0.82rem; font-weight: 500; font-family: 'Poppins', sans-serif; cursor: pointer; transition: background 0.2s; }
+        .ar-modal-save { border: none; background: #e6e6e6; color: #111; border-radius: 8px; padding: 10px 18px; font-size: 0.95rem; font-weight: 500; font-family: 'Poppins', sans-serif; cursor: pointer; transition: background 0.2s; min-height: 40px; }
         .ar-modal-save:hover:not(:disabled) { background: #fff; }
         .ar-modal-save:disabled { opacity: 0.5; cursor: not-allowed; }
       `}</style>
