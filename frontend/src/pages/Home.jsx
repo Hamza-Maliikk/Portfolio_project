@@ -445,7 +445,7 @@ export default function HomePage() {
                     <Eye size={15} /> View Resume
                   </a>
                 )}
-                <a href="#contact" style={{
+                <a href="/contact" style={{
                   display: "inline-flex", alignItems: "center", gap: 8,
                   padding: "11px 22px", borderRadius: 8,
                   border: "1px solid rgba(255,255,255,0.1)",

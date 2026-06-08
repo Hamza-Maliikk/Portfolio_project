@@ -50,7 +50,7 @@ function App() {
         <Route path="/details" element={<Details />} />
         <Route path="/resume" element={<AdminResume />} />
         <Route path="/message" element={<Adminmessage />} />
-        <Route path="/setting" element={<Adminsetting />} />
+        {/* <Route path="/setting" element={<Adminsetting />} /> */}
         <Route path="/admin" element={<Adminhome />} />
       </Route>
     </Routes>
