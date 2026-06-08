@@ -198,7 +198,7 @@ app.delete("/api/education/:id", authChecker, deleteEducation);
 
 // Contact
 app.get("/api/contact", getContact);
-app.post("/api/contact", authChecker, AddContact);
+app.post("/api/contact",  AddContact);
 
 // Details
 app.get("/api/details", getDetails);

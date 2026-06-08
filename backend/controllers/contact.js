@@ -36,7 +36,7 @@ const AddContact = async (req, res) => {
         text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,
       });
     } catch (emailErr) {
-      console.error("Email failed:", emailErr.message); // fail ho toh bhi 400 nahi aayega
+      console.error("Email failed:", emailErr.message); 
     }
 
     res.status(201).json({ message: "Message sent successfully", contact: newContact });

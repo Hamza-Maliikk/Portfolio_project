@@ -10,7 +10,7 @@ const Adminmessage = () => {
 
     React.useEffect(() => {
         // Purane messages load karo
-        fetch(API)
+        fetch(API, { credentials: 'omit' })
           .then((res) => res.json())
           .then((data) => setMessages(data))
           .catch((err) => console.error("Error fetching messages:", err));
