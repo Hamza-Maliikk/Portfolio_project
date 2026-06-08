@@ -5,14 +5,14 @@ const BASE = `blogs`;
 
 const Blog = () => {
   const canCrud = Boolean(localStorage.getItem("token"));
-  const [blogs, setBlogs] = useState([]);
-  const [form, setForm] = useState({ title: "", content: "", tags: "", category: "" });
-  const [editId, setEditId] = useState(null);
-  const [selected, setSelected] = useState(null);
+  const [blogs, setBlogs]               = useState([]);
+  const [form, setForm]                 = useState({ title: "", content: "", tags: "", category: "" });
+  const [editId, setEditId]             = useState(null);
+  const [selected, setSelected]         = useState(null);
   const [activeCategory, setActiveCategory] = useState("All");
-  const [showForm, setShowForm] = useState(false);
-  const [categories, setCategories] = useState([]);
-  const [file, setFile] = useState(null);
+  const [showForm, setShowForm]         = useState(false);
+  const [categories, setCategories]     = useState([]);
+  const [file, setFile]                 = useState(null);
   const [currentImage, setCurrentImage] = useState("");
 
   useEffect(() => { fetchData(); }, []);
@@ -52,7 +52,7 @@ const Blog = () => {
   };
 
   const handleSubmit = async () => {
-    if (!form.title || !form.content) return alert("Title and Content are required!"); // ✅
+    if (!form.title || !form.content) return alert("Title and Content are required!");
 
     const formData = new FormData();
     formData.append("title", form.title);
@@ -67,17 +67,14 @@ const Blog = () => {
           await api.put(`${BASE}/${editId}`, formData);
         } else {
           await api.put(`${BASE}/${editId}`, {
-            title: form.title,
-            content: form.content,
-            tags: form.tags,
-            category: form.category,
+            title: form.title, content: form.content,
+            tags: form.tags,   category: form.category,
           });
         }
         setEditId(null);
       } else {
         await api.post(BASE, formData);
       }
-
       setForm({ title: "", content: "", tags: "", category: "" });
       setFile(null);
       setCurrentImage("");
@@ -98,7 +95,7 @@ const Blog = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this?")) return; // ✅
+    if (!window.confirm("Are you sure you want to delete this?")) return;
     await api.delete(`${BASE}/${id}`);
     fetchData();
   };
@@ -107,200 +104,241 @@ const Blog = () => {
     ? blogs
     : blogs.filter((b) => b.category === activeCategory);
 
+  // ── Detail View ──
   if (selected) {
     return (
-      <div className="blog-shell" style={{ padding: "0", maxWidth: "800px", margin: "0 auto" }}>
-        <button onClick={() => setSelected(null)} style={backBtn}>← Back</button>
-        <div style={{ marginTop: "20px" }}>
-          <span style={{ ...categoryBadge, backgroundColor: getCategoryColor(selected.category) }}>
-            {selected.category}
-          </span>
-          <h1 style={{ marginTop: "12px", fontSize: "28px" }}>{selected.title}</h1>
-          {selected.image && (
-            <img
-              src={selected.image}
-              alt="blog"
-              style={{ width: "100%", maxHeight: "300px", objectFit: "cover", borderRadius: "10px", marginTop: "10px", marginBottom: "20px" }}
-            />
+      <>
+        <style>{styles}</style>
+        <section className="bl-page">
+          <button className="bl-back-btn" onClick={() => setSelected(null)}>← Back</button>
+          {selected.category && (
+            <span className="bl-cat-badge">{selected.category}</span>
           )}
-          <div style={{ display: "flex", gap: "16px", color: "#888", fontSize: "13px", marginBottom: "24px" }}>
+          <h1 className="bl-detail-title">{selected.title}</h1>
+          {selected.image && (
+            <img src={selected.image} alt="blog" className="bl-detail-img" />
+          )}
+          <div className="bl-detail-meta">
             <span>📅 {new Date(selected.createdAt).toDateString()}</span>
-            <span>🏷️ {selected.tags}</span>
+            {selected.tags && <span>🏷️ {selected.tags}</span>}
           </div>
-          <div style={{ lineHeight: "1.9", color: "#333", fontSize: "16px", whiteSpace: "pre-wrap" }}>
-            {selected.content}
-          </div>
+          <p className="bl-detail-content">{selected.content}</p>
           {canCrud && (
-            <div style={{ display: "flex", gap: "8px", marginTop: "30px" }}>
-              <button onClick={() => handleEdit(selected)} style={editBtn}>✏️ Edit</button>
-              <button onClick={() => { handleDelete(selected._id); setSelected(null); }} style={deleteBtn}>🗑️ Delete</button>
+            <div className="bl-actions">
+              <button className="bl-btn" onClick={() => handleEdit(selected)}>Edit</button>
+              <button className="bl-btn del" onClick={() => { handleDelete(selected._id); setSelected(null); }}>Delete</button>
             </div>
           )}
-        </div>
-      </div>
+        </section>
+      </>
     );
   }
 
   return (
-    <div className="blog-shell" style={{ padding: "0", maxWidth: "900px", margin: "0 auto" }}>
+    <>
+      <style>{styles}</style>
+      <section className="bl-page">
 
-      {/* Header */}
-      <div style={{ fontFamily: "'Poppins', sans-serif", display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "24px" }}>
-        <div>
-          <h2 style={{ margin: 0, fontSize: "24px" }}>📝 Blog Posts</h2>
-          <p style={{ margin: "4px 0 0", color: "#888", fontSize: "13px" }}>{blogs.length} posts total</p>
-        </div>
-        {canCrud && (
-          <button
-            onClick={() => {
-              setShowForm(!showForm);
-              setEditId(null);
-              setCurrentImage("");
-              setFile(null);
-              setForm({ title: "", content: "", tags: "", category: categories[0] || "" });
-            }}
-            style={btnStyle}
-          >
-            {showForm ? "✕ Cancel" : "+ New Post"}
-          </button>
-        )}
-      </div>
-
-      {/* Form */}
-      {canCrud && showForm && (
-        <div className="text-black" style={formCard}>
-          <h3 style={{ margin: "0 0 16px" }}>
-            {editId ? " Edit Post" : "Write a New Post"} 
-          </h3>
-          <input
-            placeholder="Title"
-            value={form.title}
-            onChange={(e) => setForm({ ...form, title: e.target.value })}
-            style={{ ...inputStyle, marginBottom: "10px" }}
-          />
-          <textarea
-            placeholder="Write your content here..." 
-            value={form.content}
-            onChange={(e) => setForm({ ...form, content: e.target.value })}
-            rows={6}
-            style={{ ...inputStyle, resize: "vertical", marginBottom: "10px" }}
-          />
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => setFile(e.target.files[0])}
-            style={{ marginBottom: "10px" }}
-          />
-          {editId && currentImage && !file && (
-            <div style={{ marginBottom: "10px" }}>
-              <small style={{ color: "#777", display: "block", marginBottom: "6px" }}>Current image</small>
-              <img src={currentImage} alt="current blog" style={{ width: "100%", maxHeight: "180px", objectFit: "cover", borderRadius: "10px", border: "1px solid #eee" }} />
-            </div>
-          )}
-          {file && <small style={{ color: "#555", display: "block", marginBottom: "10px" }}>New image selected: {file.name}</small>}
-          <div style={{ display: "flex", gap: "10px", marginBottom: "10px" }}>
-            <input
-              placeholder="Tags (e.g. react, hooks)"
-              value={form.tags}
-              onChange={(e) => setForm({ ...form, tags: e.target.value })}
-              style={{ ...inputStyle, flex: 1 }}
-            />
-            <select
-              value={form.category}
-              onChange={(e) => setForm({ ...form, category: e.target.value })}
-              style={{ ...inputStyle, width: "160px" }}
+        <h1 className="bl-title">Blog Posts</h1>
+        <div className="bl-sub">
+          <span>{blogs.length} posts total</span>
+          {canCrud && (
+            <button
+              className="bl-add-btn"
+              onClick={() => {
+                setShowForm(!showForm);
+                setEditId(null);
+                setCurrentImage("");
+                setFile(null);
+                setForm({ title: "", content: "", tags: "", category: categories[0] || "" });
+              }}
             >
-              {categories.map((cat, i) => (
-                <option key={i} value={cat}>{cat}</option>
-              ))}
-            </select>
+              {showForm ? "✕ Cancel" : "+ New Post"}
+            </button>
+          )}
+        </div>
+
+        {/* Form */}
+        {canCrud && showForm && (
+          <div className="bl-form-card">
+            <h2 className="bl-form-title">{editId ? "Edit Post" : "Write a New Post"}</h2>
+
+            <div className="bl-field">
+              <label className="bl-label">Title</label>
+              <input className="bl-input" placeholder="Post title" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} />
+            </div>
+
+            <div className="bl-field">
+              <label className="bl-label">Content</label>
+              <textarea className="bl-textarea" placeholder="Write your content here..." value={form.content} onChange={(e) => setForm({ ...form, content: e.target.value })} rows={6} />
+            </div>
+
+            <div className="bl-field">
+              <label className="bl-label">
+                Image {editId && <span style={{ opacity: 0.6 }}>(choose new or keep existing)</span>}
+              </label>
+              <div className="bl-upload-area" onClick={() => document.getElementById("bl-file-input").click()}>
+                <input id="bl-file-input" type="file" accept="image/*" style={{ display: "none" }} onChange={(e) => setFile(e.target.files[0])} />
+                <span className="bl-upload-icon">🖼</span>
+                <div className="bl-upload-text">Click to choose an image</div>
+                {file && <div className="bl-upload-name">{file.name}</div>}
+              </div>
+              {editId && currentImage && !file && (
+                <img src={currentImage} alt="current" className="bl-current-img" />
+              )}
+            </div>
+
+            <div className="bl-field-row">
+              <div className="bl-field" style={{ flex: 1 }}>
+                <label className="bl-label">Tags</label>
+                <input className="bl-input" placeholder="e.g. react, hooks" value={form.tags} onChange={(e) => setForm({ ...form, tags: e.target.value })} />
+              </div>
+              <div className="bl-field" style={{ width: "160px" }}>
+                <label className="bl-label">Category</label>
+                <select className="bl-input" value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })}>
+                  {categories.map((cat, i) => <option key={i} value={cat}>{cat}</option>)}
+                </select>
+              </div>
+            </div>
+
+            <div className="bl-form-actions">
+              <button className="bl-btn-cancel" onClick={() => setShowForm(false)}>Cancel</button>
+              <button className="bl-btn primary" onClick={handleSubmit}>
+                {editId ? "Update Post" : "Publish"}
+              </button>
+            </div>
           </div>
-          <button onClick={handleSubmit} style={publishBtn}>
-            {editId ? "Update Post" : "Publish"}
-          </button>
+        )}
+
+        {/* Category Filter */}
+        <div className="bl-filter-row">
+          {["All", ...categories].map((cat) => (
+            <button
+              key={cat}
+              className={`bl-filter-btn${activeCategory === cat ? " active" : ""}`}
+              onClick={() => setActiveCategory(cat)}
+            >
+              {cat}
+              {cat !== "All" && (
+                <span className="bl-filter-count">
+                  {blogs.filter((b) => b.category === cat).length}
+                </span>
+              )}
+            </button>
+          ))}
         </div>
-      )}
 
-      {/* Category Filter */}
-      <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "24px" }}>
-        {["All", ...categories].map((cat) => (
-          <button
-            key={cat}
-            onClick={() => setActiveCategory(cat)}
-            style={{
-              padding: "6px 16px", borderRadius: "20px", border: "none", cursor: "pointer", fontSize: "13px",
-              backgroundColor: activeCategory === cat ? "#1a1a1a" : "#f0f0f0",
-              color: activeCategory === cat ? "white" : "#555",
-              fontWeight: activeCategory === cat ? "bold" : "normal",
-            }}
-          >
-            {cat}
-            {cat !== "All" && (
-              <span style={{ marginLeft: "6px", opacity: 0.7 }}>
-                ({blogs.filter((b) => b.category === cat).length})
-              </span>
-            )}
-          </button>
-        ))}
-      </div>
+        {/* Empty */}
+        {filteredBlogs.length === 0 && (
+          <div className="bl-empty">
+            <p>No posts in this category yet — write the first one!</p>
+          </div>
+        )}
 
-      {/* Empty State */}
-      {filteredBlogs.length === 0 && (
-        <div style={{ textAlign: "center", padding: "60px", color: "#aaa" }}>
-          <p style={{ fontSize: "40px" }}>✍️</p>
-          <p>No posts in this category yet — write the first one!</p> 
-        </div>
-      )}
-
-      {/* Blog Cards */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
-        {filteredBlogs.map((blog) => (
-          <div key={blog._id} style={cardStyle}>
-            {blog.image && (
-              <img src={blog.image} alt="blog" style={{ width: "100%", height: "160px", objectFit: "cover", borderRadius: "10px", marginBottom: "10px" }} />
-            )}
-            <div onClick={() => setSelected(blog)} style={{ cursor: "pointer" }}>
-              <span style={{ ...categoryBadge, backgroundColor: getCategoryColor(blog.category) }}>{blog.category}</span>
-              <h3 style={{ margin: "10px 0 6px", fontSize: "16px" }}>{blog.title}</h3>
-              <p style={{ color: "#666", fontSize: "13px", margin: "0 0 12px", lineHeight: "1.5" }}>
-                {blog.content.substring(0, 80)}...
-              </p>
-              <small style={{ color: "#aaa", fontSize: "12px" }}>📅 {new Date(blog.createdAt).toDateString()}</small>
-              {blog.tags && (
-                <div style={{ marginTop: "8px" }}>
-                  {blog.tags.split(",").map((tag, i) => (
-                    <span key={i} style={tagBadge}>#{tag.trim()}</span>
-                  ))}
+        {/* Cards */}
+        <div className="bl-grid">
+          {filteredBlogs.map((blog) => (
+            <div key={blog._id} className="bl-card">
+              {blog.image && (
+                <img src={blog.image} alt="blog" className="bl-card-img" />
+              )}
+              <div onClick={() => setSelected(blog)} style={{ cursor: "pointer", flex: 1 }}>
+                {blog.category && <span className="bl-cat-badge">{blog.category}</span>}
+                <h3 className="bl-card-title">{blog.title}</h3>
+                <p className="bl-card-excerpt">{blog.content.substring(0, 80)}...</p>
+                <small className="bl-card-date">📅 {new Date(blog.createdAt).toDateString()}</small>
+                {blog.tags && (
+                  <div className="bl-tags">
+                    {blog.tags.split(",").map((tag, i) => (
+                      <span key={i} className="bl-tag">#{tag.trim()}</span>
+                    ))}
+                  </div>
+                )}
+              </div>
+              {canCrud && (
+                <div className="bl-card-footer">
+                  <button className="bl-btn" onClick={() => handleEdit(blog)}>Edit</button>
+                  <button className="bl-btn del" onClick={() => handleDelete(blog._id)}>Delete</button>
                 </div>
               )}
             </div>
-            {canCrud && (
-              <div style={{ display: "flex", gap: "6px", marginTop: "12px", borderTop: "1px solid #f0f0f0", paddingTop: "10px" }}>
-                <button onClick={() => handleEdit(blog)} style={editBtn}>✏️ Edit</button>
-                <button onClick={() => handleDelete(blog._id)} style={deleteBtn}>🗑️ Delete</button>
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
-    </div>
+          ))}
+        </div>
+
+      </section>
+    </>
   );
 };
 
-const getCategoryColor = (cat) => {
-  const colors = { React: "#61dafb33", "Node.js": "#68a06333", MongoDB: "#4db33d33", JavaScript: "#f7df1e33", CSS: "#264de433", Other: "#88888833" };
-  return colors[cat] || "#88888833";
-};
+const styles = `
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500&family=Poppins:wght@400;500;600&display=swap');
+  .bl-page { max-width: 950px; margin: 0 auto; color: #ececec; font-family: 'Poppins', sans-serif; }
+  .bl-title { font-family: 'Fraunces', serif; font-size: 2rem; font-weight: 500; margin: 0 0 0.4rem; letter-spacing: -0.02em; }
+  .bl-sub { color: #a3a3a3; margin-bottom: 1.2rem; font-size: 0.9rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; }
 
-const inputStyle = { padding: "10px 14px", borderRadius: "8px", border: "1px solid #ddd", fontSize: "14px", width: "100%", boxSizing: "border-box" };
-const btnStyle = { padding: "10px 20px", backgroundColor: "#1a1a1a", color: "white", border: "none", borderRadius: "8px", cursor: "pointer", fontSize: "14px" };
-const publishBtn = { padding: "10px 24px", backgroundColor: "#4CAF50", color: "white", border: "none", borderRadius: "8px", cursor: "pointer", fontSize: "14px", width: "100%" };
-const editBtn = { padding: "5px 12px", backgroundColor: "#2196F3", color: "white", border: "none", borderRadius: "6px", cursor: "pointer", fontSize: "12px" };
-const deleteBtn = { padding: "5px 12px", backgroundColor: "#f44336", color: "white", border: "none", borderRadius: "6px", cursor: "pointer", fontSize: "12px" };
-const backBtn = { padding: "8px 16px", backgroundColor: "#555", color: "white", border: "none", borderRadius: "6px", cursor: "pointer" };
-const formCard = { backgroundColor: "white", padding: "24px", borderRadius: "12px", marginBottom: "24px", boxShadow: "0 2px 12px rgba(0,0,0,0.08)" };
-const cardStyle = { backgroundColor: "white", padding: "16px", borderRadius: "12px", boxShadow: "0 2px 8px rgba(0,0,0,0.06)", display: "flex", flexDirection: "column", justifyContent: "space-between" };
-const categoryBadge = { display: "inline-block", padding: "3px 10px", borderRadius: "20px", fontSize: "11px", fontWeight: "bold" };
-const tagBadge = { display: "inline-block", padding: "2px 8px", backgroundColor: "#f0f0f0", borderRadius: "4px", fontSize: "11px", marginRight: "4px", color: "#555" };
+  .bl-add-btn { border: 1px solid #444; background: #262626; color: #eee; border-radius: 8px; padding: 6px 14px; cursor: pointer; font-size: 0.82rem; font-family: 'Poppins', sans-serif; transition: background 0.2s; white-space: nowrap; }
+  .bl-add-btn:hover { background: #333; }
+
+  .bl-form-card { background: #181818; border: 1px solid #2f2f2f; border-radius: 12px; padding: 1.25rem 1.1rem; margin-bottom: 1.2rem; }
+  .bl-form-title { font-family: 'Fraunces', serif; font-size: 1.1rem; font-weight: 500; color: #ececec; margin: 0 0 1rem; }
+  .bl-field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+  .bl-field-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .bl-label { font-size: 0.75rem; font-weight: 500; color: #a3a3a3; }
+  .bl-input, .bl-textarea {
+    background: #1f1f1f; border: 1px solid #3a3a3a; border-radius: 8px;
+    padding: 9px 12px; color: #ececec; font-family: 'Poppins', sans-serif;
+    font-size: 0.875rem; outline: none; transition: border-color 0.2s;
+    width: 100%; box-sizing: border-box;
+  }
+  .bl-input:focus, .bl-textarea:focus { border-color: #666; }
+  .bl-textarea { resize: vertical; min-height: 120px; }
+
+  .bl-upload-area { border: 2px dashed #3a3a3a; border-radius: 10px; padding: 1.25rem; text-align: center; cursor: pointer; transition: border-color 0.2s, background 0.2s; background: #1f1f1f; }
+  .bl-upload-area:hover { border-color: #666; background: #222; }
+  .bl-upload-icon { font-size: 1.5rem; display: block; margin-bottom: 6px; }
+  .bl-upload-text { font-size: 0.82rem; color: #888; }
+  .bl-upload-name { font-size: 0.78rem; color: #ccc; margin-top: 4px; font-weight: 500; }
+  .bl-current-img { width: 100%; max-height: 160px; object-fit: cover; border-radius: 8px; margin-top: 8px; border: 1px solid #3a3a3a; display: block; }
+
+  .bl-form-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 1rem; }
+  .bl-btn-cancel { border: 1px solid #3a3a3a; background: transparent; color: #888; border-radius: 8px; padding: 7px 14px; font-size: 0.82rem; font-family: 'Poppins', sans-serif; cursor: pointer; transition: background 0.2s; }
+  .bl-btn-cancel:hover { background: #222; }
+
+  .bl-btn { border: 1px solid #444; background: #262626; color: #eee; border-radius: 8px; padding: 5px 10px; cursor: pointer; font-size: 12px; font-family: 'Poppins', sans-serif; transition: background 0.2s, border-color 0.2s; }
+  .bl-btn:hover { background: #333; border-color: #555; }
+  .bl-btn.primary { background: #e6e6e6; border-color: #e6e6e6; color: #111; font-weight: 500; padding: 7px 16px; font-size: 0.82rem; }
+  .bl-btn.primary:hover { background: #fff; border-color: #fff; }
+  .bl-btn.del:hover { background: rgba(239,68,68,0.1); border-color: #ef4444; color: #ef4444; }
+
+  .bl-filter-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1.2rem; }
+  .bl-filter-btn { border: 1px solid #2f2f2f; background: #181818; color: #888; border-radius: 20px; padding: 5px 14px; cursor: pointer; font-size: 0.78rem; font-family: 'Poppins', sans-serif; transition: all 0.2s; }
+  .bl-filter-btn:hover { border-color: #444; color: #ccc; }
+  .bl-filter-btn.active { background: #ececec; border-color: #ececec; color: #111; font-weight: 500; }
+  .bl-filter-count { margin-left: 5px; opacity: 0.6; font-size: 0.72rem; }
+
+  .bl-empty { text-align: center; padding: 3rem 0; color: #555; font-size: 0.85rem; }
+
+  .bl-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+  .bl-card { background: #181818; border: 1px solid #2f2f2f; border-radius: 12px; padding: 1rem 1.1rem; display: flex; flex-direction: column; gap: 0.5rem; transition: border-color 0.2s; }
+  .bl-card:hover { border-color: #3a3a3a; }
+  .bl-card-img { width: 100%; height: 150px; object-fit: cover; border-radius: 8px; border: 1px solid #2f2f2f; }
+  .bl-cat-badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 500; background: #252525; border: 1px solid #3a3a3a; color: #a3a3a3; margin-bottom: 4px; }
+  .bl-card-title { font-family: 'Fraunces', serif; font-size: 1rem; font-weight: 500; color: #ececec; margin: 4px 0; }
+  .bl-card-excerpt { font-size: 0.82rem; color: #888; line-height: 1.6; margin: 0; }
+  .bl-card-date { font-size: 0.75rem; color: #555; display: block; margin-top: 4px; }
+  .bl-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+  .bl-tag { font-size: 0.72rem; padding: 2px 8px; background: #252525; border: 1px solid #2f2f2f; border-radius: 4px; color: #666; }
+  .bl-card-footer { display: flex; gap: 6px; padding-top: 10px; border-top: 1px solid #2f2f2f; margin-top: auto; }
+
+  .bl-back-btn { border: 1px solid #3a3a3a; background: #262626; color: #aaa; border-radius: 8px; padding: 7px 14px; font-size: 0.82rem; font-family: 'Poppins', sans-serif; cursor: pointer; transition: background 0.2s; }
+  .bl-back-btn:hover { background: #333; color: #eee; }
+  .bl-detail-title { font-family: 'Fraunces', serif; font-size: 1.8rem; font-weight: 500; color: #ececec; margin: 12px 0 6px; letter-spacing: -0.02em; }
+  .bl-detail-img { width: 100%; max-height: 300px; object-fit: cover; border-radius: 10px; margin: 10px 0 16px; border: 1px solid #2f2f2f; display: block; }
+  .bl-detail-meta { display: flex; gap: 16px; color: #666; font-size: 0.8rem; margin-bottom: 20px; }
+  .bl-detail-content { font-size: 0.92rem; color: #aaa; line-height: 1.9; white-space: pre-wrap; margin: 0 0 24px; }
+  .bl-actions { display: flex; gap: 8px; }
+
+  @media (max-width: 600px) { .bl-grid { grid-template-columns: 1fr; } .bl-field-row { flex-direction: column; } }
+`;
 
 export default Blog;

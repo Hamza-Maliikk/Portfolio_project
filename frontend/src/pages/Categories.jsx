@@ -12,9 +12,7 @@ const Categories = () => {
   const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    fetchCategories();
-  }, []);
+  useEffect(() => { fetchCategories(); }, []);
 
   const fetchCategories = async () => {
     setLoading(true);
@@ -64,151 +62,160 @@ const Categories = () => {
     }
   };
 
-  // Single Category View
+  // ── Single Category View ──
   if (selected) {
     return (
       <>
-        <style>{`
-          @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;1,400&family=DM+Mono:wght@400;500&display=swap');
-          .cat-shell { font-family: 'DM Mono', monospace; color: #1a1a1a; }
-          .cat-shell h1, .cat-shell h2 { font-family: 'Fraunces', serif; letter-spacing: -0.02em; }
-        `}</style>
-        <div className="cat-shell" style={{ padding: "0", maxWidth: "800px", margin: "0 auto" }}>
-          <button onClick={() => setSelected(null)} style={backBtn}>← Back</button>
-          <div style={{ marginTop: "20px" }}>
-            <h1 style={{ marginTop: "12px", fontSize: "28px" }}>{selected.category}</h1>
-            <div style={{ color: "#888", fontSize: "13px", marginBottom: "24px" }}>
-              <span>📅 {new Date(selected.createdAt).toDateString()}</span>
+        <style>{styles}</style>
+        <section className="cat-page">
+          <button className="cat-back-btn" onClick={() => setSelected(null)}>← Back</button>
+          <h1 className="cat-detail-title">{selected.category}</h1>
+          <p className="cat-detail-date">📅 {new Date(selected.createdAt).toDateString()}</p>
+          <p className="cat-detail-desc">{selected.description || "No description available."}</p>
+          {canCrud && (
+            <div className="cat-actions">
+              <button className="cat-btn" onClick={() => handleEdit(selected)}>Edit</button>
+              <button className="cat-btn del" onClick={() => { handleDelete(selected._id); setSelected(null); }}>Delete</button>
             </div>
-            <div style={{ lineHeight: "1.9", color: "#333", fontSize: "16px" }}>
-              {selected.description || "No description available."}
-            </div>
-            {canCrud && (
-              <div style={{ display: "flex", gap: "8px", marginTop: "30px" }}>
-                <button onClick={() => handleEdit(selected)} style={editBtn}>✏️ Edit</button>
-                <button onClick={() => { handleDelete(selected._id); setSelected(null); }} style={deleteBtn}>
-                  🗑️ Delete
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
+          )}
+        </section>
       </>
     );
   }
 
   return (
     <>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;1,400&family=DM+Mono:wght@400;500&display=swap');
-        .cat-shell { font-family: 'DM Mono', monospace; color: #1a1a1a; }
-        .cat-shell h2 { font-family: 'Fraunces', serif; letter-spacing: -0.02em; }
-        .cat-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.1) !important; transform: translateY(-1px); transition: all 0.2s; }
-      `}</style>
-      <div className="cat-shell" style={{ padding: "0", maxWidth: "900px", margin: "0 auto" }}>
+      <style>{styles}</style>
+      <section className="cat-page">
 
-        {/* Header */}
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "24px" }}>
-          <div>
-            <h2 style={{ margin: 0, fontSize: "24px" }}>🗂️ Categories</h2>
-            <p style={{ margin: "4px 0 0", color: "#888", fontSize: "13px" }}>
-              {categories.length} categories total
-            </p>
-          </div>
+        <h1 className="cat-title">Categories</h1>
+        <div className="cat-sub">
+          <span>{categories.length} categories total</span>
           {canCrud && (
             <button
+              className="cat-add-btn"
               onClick={() => {
                 setShowForm(!showForm);
                 setEditId(null);
                 setForm({ category: "", description: "" });
               }}
-              style={btnStyle}
             >
               {showForm ? "✕ Cancel" : "+ New Category"}
             </button>
           )}
         </div>
 
-        {/* Form */}
         {canCrud && showForm && (
-          <div style={formCard}>
-            <h3 style={{ margin: "0 0 16px", fontFamily: "'Fraunces', serif" }}>
-              {editId ? "✏️ Edit Category" : "🚀 Create New Category"}
-            </h3>
-            <input
-              placeholder="Category Name"
-              value={form.category}
-              onChange={(e) => setForm({ ...form, category: e.target.value })}
-              style={{ ...inputStyle, marginBottom: "10px" }}
-            />
-            <textarea
-              placeholder="Write a description..."
-              value={form.description}
-              onChange={(e) => setForm({ ...form, description: e.target.value })}
-              rows={4}
-              style={{ ...inputStyle, resize: "vertical", marginBottom: "10px" }}
-            />
-            <button onClick={handleSubmit} style={publishBtn}>
-              {editId ? "✏️ Update Category" : "🚀 Save"}
-            </button>
+          <div className="cat-form-card">
+            <h2 className="cat-form-title">{editId ? "Edit Category" : "Create New Category"}</h2>
+            <div className="cat-field">
+              <label className="cat-label">Category Name</label>
+              <input
+                className="cat-input"
+                placeholder="e.g. Technology"
+                value={form.category}
+                onChange={(e) => setForm({ ...form, category: e.target.value })}
+              />
+            </div>
+            <div className="cat-field">
+              <label className="cat-label">Description</label>
+              <textarea
+                className="cat-textarea"
+                placeholder="Write a description..."
+                value={form.description}
+                onChange={(e) => setForm({ ...form, description: e.target.value })}
+                rows={4}
+              />
+            </div>
+            <div className="cat-form-actions">
+              <button className="cat-btn-cancel" onClick={() => setShowForm(false)}>Cancel</button>
+              <button className="cat-btn primary" onClick={handleSubmit}>
+                {editId ? "Update Category" : "Save"}
+              </button>
+            </div>
           </div>
         )}
 
-        {/* Loading */}
-        {loading && (
-          <div style={{ textAlign: "center", padding: "40px", color: "#aaa" }}>
-            <p>Loading...</p>
-          </div>
-        )}
+        {loading && <div className="cat-loading">Loading...</div>}
 
-        {/* Empty State */}
         {!loading && categories.length === 0 && (
-          <div style={{ textAlign: "center", padding: "60px", color: "#aaa" }}>
-            <p>No categories yet — create your first one!</p>
-          </div>
+          <div className="cat-empty">No categories yet — create your first one!</div>
         )}
 
-        {/* Category Cards */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+        <div className="cat-grid">
           {categories.map((cat) => (
-            <div key={cat._id} className="cat-card" style={cardStyle}>
-              <div onClick={() => setSelected(cat)} style={{ cursor: "pointer" }}>
-                <h3 style={{ margin: "0 0 6px", fontSize: "16px", fontFamily: "'Fraunces', serif" }}>
-                  {cat.category}
-                </h3>
-                <p style={{ margin: "0 0 8px", color: "#888", fontSize: "12px" }}>
-                  {cat.blogCount || 0} {(cat.blogCount || 0) === 1 ? "blog" : "blogs"}
-                </p>
-                <p style={{ color: "#666", fontSize: "13px", margin: "0 0 12px", lineHeight: "1.5" }}>
+            <div key={cat._id} className="cat-card">
+              <div onClick={() => setSelected(cat)} style={{ cursor: "pointer", flex: 1 }}>
+                <h3 className="cat-card-title">{cat.category}</h3>
+                <p className="cat-card-count">{cat.blogCount || 0} {(cat.blogCount || 0) === 1 ? "blog" : "blogs"}</p>
+                <p className="cat-card-desc">
                   {cat.description
                     ? cat.description.substring(0, 80) + (cat.description.length > 80 ? "..." : "")
                     : "No description available."}
                 </p>
-                <small style={{ color: "#aaa", fontSize: "12px" }}>
-                  📅 {new Date(cat.createdAt).toDateString()}
-                </small>
+                <small className="cat-card-date">📅 {new Date(cat.createdAt).toDateString()}</small>
               </div>
               {canCrud && (
-                <div style={{ display: "flex", gap: "6px", marginTop: "12px", borderTop: "1px solid #f0f0f0", paddingTop: "10px" }}>
-                  <button onClick={() => handleEdit(cat)} style={editBtn}>✏️ Edit</button>
-                  <button onClick={() => handleDelete(cat._id)} style={deleteBtn}>🗑️ Delete</button>
+                <div className="cat-card-footer">
+                  <button className="cat-btn" onClick={() => handleEdit(cat)}>Edit</button>
+                  <button className="cat-btn del" onClick={() => handleDelete(cat._id)}>Delete</button>
                 </div>
               )}
             </div>
           ))}
         </div>
-      </div>
+
+      </section>
     </>
   );
 };
 
-const inputStyle = { padding: "10px 14px", borderRadius: "8px", border: "1px solid #ddd", fontSize: "14px", width: "100%", boxSizing: "border-box", fontFamily: "'DM Mono', monospace" };
-const btnStyle = { padding: "10px 20px", backgroundColor: "#1a1a1a", color: "white", border: "none", borderRadius: "8px", cursor: "pointer", fontSize: "14px", fontFamily: "'DM Mono', monospace" };
-const publishBtn = { padding: "10px 24px", backgroundColor: "#4CAF50", color: "white", border: "none", borderRadius: "8px", cursor: "pointer", fontSize: "14px", width: "100%", fontFamily: "'DM Mono', monospace" };
-const editBtn = { padding: "5px 12px", backgroundColor: "#2196F3", color: "white", border: "none", borderRadius: "6px", cursor: "pointer", fontSize: "12px", fontFamily: "'DM Mono', monospace" };
-const deleteBtn = { padding: "5px 12px", backgroundColor: "#f44336", color: "white", border: "none", borderRadius: "6px", cursor: "pointer", fontSize: "12px", fontFamily: "'DM Mono', monospace" };
-const backBtn = { padding: "8px 16px", backgroundColor: "#555", color: "white", border: "none", borderRadius: "6px", cursor: "pointer", fontFamily: "'DM Mono', monospace" };
-const formCard = { backgroundColor: "white", padding: "24px", borderRadius: "12px", marginBottom: "24px", boxShadow: "0 2px 12px rgba(0,0,0,0.08)" };
-const cardStyle = { backgroundColor: "white", padding: "16px", borderRadius: "12px", boxShadow: "0 2px 8px rgba(0,0,0,0.06)", display: "flex", flexDirection: "column", justifyContent: "space-between" };
+const styles = `
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500&family=Poppins:wght@400;500;600&display=swap');
+  .cat-page { max-width: 950px; margin: 0 auto; color: #ececec; font-family: 'Poppins', sans-serif; }
+  .cat-title { font-family: 'Fraunces', serif; font-size: 2rem; font-weight: 500; margin: 0 0 0.4rem; letter-spacing: -0.02em; }
+  .cat-sub { color: #a3a3a3; margin-bottom: 1.2rem; font-size: 0.9rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; }
+
+  .cat-add-btn { border: 1px solid #444; background: #262626; color: #eee; border-radius: 8px; padding: 6px 14px; cursor: pointer; font-size: 0.82rem; font-family: 'Poppins', sans-serif; transition: background 0.2s; white-space: nowrap; }
+  .cat-add-btn:hover { background: #333; }
+
+  .cat-form-card { background: #181818; border: 1px solid #2f2f2f; border-radius: 12px; padding: 1.25rem 1.1rem; margin-bottom: 1.2rem; }
+  .cat-form-title { font-family: 'Fraunces', serif; font-size: 1.1rem; font-weight: 500; color: #ececec; margin: 0 0 1rem; }
+  .cat-field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+  .cat-label { font-size: 0.75rem; font-weight: 500; color: #a3a3a3; }
+  .cat-input, .cat-textarea { background: #1f1f1f; border: 1px solid #3a3a3a; border-radius: 8px; padding: 9px 12px; color: #ececec; font-family: 'Poppins', sans-serif; font-size: 0.875rem; outline: none; transition: border-color 0.2s; width: 100%; box-sizing: border-box; }
+  .cat-input:focus, .cat-textarea:focus { border-color: #666; }
+  .cat-textarea { resize: vertical; min-height: 90px; }
+  .cat-form-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 1rem; }
+  .cat-btn-cancel { border: 1px solid #3a3a3a; background: transparent; color: #888; border-radius: 8px; padding: 7px 14px; font-size: 0.82rem; font-family: 'Poppins', sans-serif; cursor: pointer; transition: background 0.2s; }
+  .cat-btn-cancel:hover { background: #222; }
+
+  .cat-btn { border: 1px solid #444; background: #262626; color: #eee; border-radius: 8px; padding: 5px 10px; cursor: pointer; font-size: 12px; font-family: 'Poppins', sans-serif; transition: background 0.2s, border-color 0.2s; }
+  .cat-btn:hover { background: #333; border-color: #555; }
+  .cat-btn.primary { background: #e6e6e6; border-color: #e6e6e6; color: #111; font-weight: 500; padding: 7px 16px; font-size: 0.82rem; }
+  .cat-btn.primary:hover { background: #fff; border-color: #fff; }
+  .cat-btn.del:hover { background: rgba(239,68,68,0.1); border-color: #ef4444; color: #ef4444; }
+
+  .cat-loading { color: #666; font-size: 0.85rem; padding: 2rem 0; text-align: center; }
+  .cat-empty   { color: #666; font-size: 0.85rem; padding: 3rem 0; text-align: center; }
+
+  .cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+  .cat-card { background: #181818; border: 1px solid #2f2f2f; border-radius: 12px; padding: 1rem 1.1rem; display: flex; flex-direction: column; justify-content: space-between; transition: border-color 0.2s; }
+  .cat-card:hover { border-color: #3a3a3a; }
+  .cat-card-title { font-family: 'Fraunces', serif; font-size: 1rem; font-weight: 500; color: #ececec; margin: 0 0 4px; }
+  .cat-card-count { font-size: 0.75rem; color: #666; margin: 0 0 6px; }
+  .cat-card-desc  { font-size: 0.82rem; color: #888; line-height: 1.6; margin: 0 0 8px; }
+  .cat-card-date  { font-size: 0.75rem; color: #555; }
+  .cat-card-footer { display: flex; gap: 6px; margin-top: 10px; padding-top: 10px; border-top: 1px solid #2f2f2f; }
+
+  .cat-detail-title { font-family: 'Fraunces', serif; font-size: 1.8rem; font-weight: 500; color: #ececec; margin: 16px 0 6px; letter-spacing: -0.02em; }
+  .cat-detail-date  { font-size: 0.8rem; color: #666; margin: 0 0 20px; }
+  .cat-detail-desc  { font-size: 0.92rem; color: #aaa; line-height: 1.9; margin: 0 0 24px; }
+  .cat-actions { display: flex; gap: 8px; }
+  .cat-back-btn { border: 1px solid #3a3a3a; background: #262626; color: #aaa; border-radius: 8px; padding: 7px 14px; font-size: 0.82rem; font-family: 'Poppins', sans-serif; cursor: pointer; transition: background 0.2s; }
+  .cat-back-btn:hover { background: #333; color: #eee; }
+
+  @media (max-width: 600px) { .cat-grid { grid-template-columns: 1fr; } }
+`;
 
 export default Categories;
