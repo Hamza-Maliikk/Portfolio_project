@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import api from "../lib/api"; // ✅ axios interceptor wala
+import api from "../lib/api";
 
-const BASE = `blogs`; // ✅ baseURL interceptor mein already hai
+const BASE = `blogs`;
 
 const Blog = () => {
   const canCrud = Boolean(localStorage.getItem("token"));
@@ -19,8 +19,8 @@ const Blog = () => {
 
   const fetchData = async () => {
     try {
-      const res     = await api.get(BASE); // ✅ axios
-      const payload = res.data;            // ✅ res.data
+      const res     = await api.get(BASE);
+      const payload = res.data;
 
       const blogsList = Array.isArray(payload) ? payload : payload?.blogs || [];
       const categoryList = Array.isArray(payload?.categories)
@@ -52,7 +52,7 @@ const Blog = () => {
   };
 
   const handleSubmit = async () => {
-    if (!form.title || !form.content) return alert("Title aur Content zaroor bharo!");
+    if (!form.title || !form.content) return alert("Title and Content are required!"); // ✅
 
     const formData = new FormData();
     formData.append("title", form.title);
@@ -64,10 +64,8 @@ const Blog = () => {
     try {
       if (editId) {
         if (file) {
-          // ✅ Image hai — FormData bhejo
           await api.put(`${BASE}/${editId}`, formData);
         } else {
-          // ✅ Image nahi — JSON bhejo
           await api.put(`${BASE}/${editId}`, {
             title: form.title,
             content: form.content,
@@ -77,7 +75,7 @@ const Blog = () => {
         }
         setEditId(null);
       } else {
-        await api.post(BASE, formData); // ✅ axios — Content-Type axios khud set karega
+        await api.post(BASE, formData);
       }
 
       setForm({ title: "", content: "", tags: "", category: "" });
@@ -100,8 +98,8 @@ const Blog = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Delete karna hai?")) return;
-    await api.delete(`${BASE}/${id}`); // ✅ axios
+    if (!window.confirm("Are you sure you want to delete this?")) return; // ✅
+    await api.delete(`${BASE}/${id}`);
     fetchData();
   };
 
@@ -170,8 +168,10 @@ const Blog = () => {
 
       {/* Form */}
       {canCrud && showForm && (
-        <div style={formCard}>
-          <h3 style={{ margin: "0 0 16px" }}>{editId ? "✏️ Post Edit Karo" : "🚀 Naya Post Likho"}</h3>
+        <div className="text-black" style={formCard}>
+          <h3 style={{ margin: "0 0 16px" }}>
+            {editId ? " Edit Post" : "Write a New Post"} 
+          </h3>
           <input
             placeholder="Title"
             value={form.title}
@@ -179,7 +179,7 @@ const Blog = () => {
             style={{ ...inputStyle, marginBottom: "10px" }}
           />
           <textarea
-            placeholder="Content likhoo..."
+            placeholder="Write your content here..." 
             value={form.content}
             onChange={(e) => setForm({ ...form, content: e.target.value })}
             rows={6}
@@ -216,7 +216,7 @@ const Blog = () => {
             </select>
           </div>
           <button onClick={handleSubmit} style={publishBtn}>
-            {editId ? "✏️ Update Post" : "🚀 Publish"}
+            {editId ? "Update Post" : "Publish"}
           </button>
         </div>
       )}
@@ -248,7 +248,7 @@ const Blog = () => {
       {filteredBlogs.length === 0 && (
         <div style={{ textAlign: "center", padding: "60px", color: "#aaa" }}>
           <p style={{ fontSize: "40px" }}>✍️</p>
-          <p>Is category mein koi post nahi - pehla likho!</p>
+          <p>No posts in this category yet — write the first one!</p> 
         </div>
       )}
 

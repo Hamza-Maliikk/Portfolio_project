@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import api from "../lib/api"; // ✅ axios interceptor wala
+import api from "../lib/api";
 
-const BASE = `categories`; // ✅ baseURL interceptor mein already hai
+const BASE = `categories`;
 
 const Categories = () => {
   const canCrud = Boolean(localStorage.getItem("token"));
@@ -20,29 +20,29 @@ const Categories = () => {
     setLoading(true);
     try {
       const res = await api.get(BASE);
-      setCategories(res.data);        
+      setCategories(res.data);
     } catch (err) {
-      console.error("Categories fetch nahi hoi:", err);
+      console.error("Failed to fetch categories:", err);
     } finally {
       setLoading(false);
     }
   };
 
   const handleSubmit = async () => {
-    if (!form.category) return alert("Category name zaroor bharo!");
+    if (!form.category) return alert("Category name is required!");
     try {
       if (editId) {
-        await api.put(`${BASE}/${editId}`, form); 
+        await api.put(`${BASE}/${editId}`, form);
         setEditId(null);
       } else {
-        await api.post(BASE, form); 
+        await api.post(BASE, form);
       }
       setForm({ category: "", description: "" });
       setShowForm(false);
       fetchCategories();
     } catch (err) {
       console.error(err);
-      alert("Please also fill description!");
+      alert("Please fill all fields!");
     }
   };
 
@@ -54,13 +54,13 @@ const Categories = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Delete karna hai?")) return;
+    if (!window.confirm("Are you sure you want to delete this?")) return;
     try {
-      await api.delete(`${BASE}/${id}`); // ✅ axios
+      await api.delete(`${BASE}/${id}`);
       fetchCategories();
     } catch (err) {
       console.error(err);
-      alert("Delete nahi hua!");
+      alert("Failed to delete!");
     }
   };
 
@@ -81,7 +81,7 @@ const Categories = () => {
               <span>📅 {new Date(selected.createdAt).toDateString()}</span>
             </div>
             <div style={{ lineHeight: "1.9", color: "#333", fontSize: "16px" }}>
-              {selected.description || "Koi description nahi."}
+              {selected.description || "No description available."}
             </div>
             {canCrud && (
               <div style={{ display: "flex", gap: "8px", marginTop: "30px" }}>
@@ -133,7 +133,7 @@ const Categories = () => {
         {canCrud && showForm && (
           <div style={formCard}>
             <h3 style={{ margin: "0 0 16px", fontFamily: "'Fraunces', serif" }}>
-              {editId ? "✏️ Category Edit Karo" : "🚀 Nai Category Banao"}
+              {editId ? "✏️ Edit Category" : "🚀 Create New Category"}
             </h3>
             <input
               placeholder="Category Name"
@@ -142,7 +142,7 @@ const Categories = () => {
               style={{ ...inputStyle, marginBottom: "10px" }}
             />
             <textarea
-              placeholder="Description likhoo..."
+              placeholder="Write a description..."
               value={form.description}
               onChange={(e) => setForm({ ...form, description: e.target.value })}
               rows={4}
@@ -164,8 +164,7 @@ const Categories = () => {
         {/* Empty State */}
         {!loading && categories.length === 0 && (
           <div style={{ textAlign: "center", padding: "60px", color: "#aaa" }}>
-            <p style={{ fontSize: "40px" }}>🗂️</p>
-            <p>Koi category nahi — pehli banao!</p>
+            <p>No categories yet — create your first one!</p>
           </div>
         )}
 
@@ -183,7 +182,7 @@ const Categories = () => {
                 <p style={{ color: "#666", fontSize: "13px", margin: "0 0 12px", lineHeight: "1.5" }}>
                   {cat.description
                     ? cat.description.substring(0, 80) + (cat.description.length > 80 ? "..." : "")
-                    : "Koi description nahi."}
+                    : "No description available."}
                 </p>
                 <small style={{ color: "#aaa", fontSize: "12px" }}>
                   📅 {new Date(cat.createdAt).toDateString()}
@@ -203,87 +202,13 @@ const Categories = () => {
   );
 };
 
-const inputStyle = {
-  padding: "10px 14px",
-  borderRadius: "8px",
-  border: "1px solid #ddd",
-  fontSize: "14px",
-  width: "100%",
-  boxSizing: "border-box",
-  fontFamily: "'DM Mono', monospace",
-};
-
-const btnStyle = {
-  padding: "10px 20px",
-  backgroundColor: "#1a1a1a",
-  color: "white",
-  border: "none",
-  borderRadius: "8px",
-  cursor: "pointer",
-  fontSize: "14px",
-  fontFamily: "'DM Mono', monospace",
-};
-
-const publishBtn = {
-  padding: "10px 24px",
-  backgroundColor: "#4CAF50",
-  color: "white",
-  border: "none",
-  borderRadius: "8px",
-  cursor: "pointer",
-  fontSize: "14px",
-  width: "100%",
-  fontFamily: "'DM Mono', monospace",
-};
-
-const editBtn = {
-  padding: "5px 12px",
-  backgroundColor: "#2196F3",
-  color: "white",
-  border: "none",
-  borderRadius: "6px",
-  cursor: "pointer",
-  fontSize: "12px",
-  fontFamily: "'DM Mono', monospace",
-};
-
-const deleteBtn = {
-  padding: "5px 12px",
-  backgroundColor: "#f44336",
-  color: "white",
-  border: "none",
-  borderRadius: "6px",
-  cursor: "pointer",
-  fontSize: "12px",
-  fontFamily: "'DM Mono', monospace",
-};
-
-const backBtn = {
-  padding: "8px 16px",
-  backgroundColor: "#555",
-  color: "white",
-  border: "none",
-  borderRadius: "6px",
-  cursor: "pointer",
-  fontFamily: "'DM Mono', monospace",
-};
-
-const formCard = {
-  backgroundColor: "white",
-  padding: "24px",
-  borderRadius: "12px",
-  marginBottom: "24px",
-  boxShadow: "0 2px 12px rgba(0,0,0,0.08)",
-};
-
-const cardStyle = {
-  backgroundColor: "white",
-  padding: "16px",
-  borderRadius: "12px",
-  boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "space-between",
-};
+const inputStyle = { padding: "10px 14px", borderRadius: "8px", border: "1px solid #ddd", fontSize: "14px", width: "100%", boxSizing: "border-box", fontFamily: "'DM Mono', monospace" };
+const btnStyle = { padding: "10px 20px", backgroundColor: "#1a1a1a", color: "white", border: "none", borderRadius: "8px", cursor: "pointer", fontSize: "14px", fontFamily: "'DM Mono', monospace" };
+const publishBtn = { padding: "10px 24px", backgroundColor: "#4CAF50", color: "white", border: "none", borderRadius: "8px", cursor: "pointer", fontSize: "14px", width: "100%", fontFamily: "'DM Mono', monospace" };
+const editBtn = { padding: "5px 12px", backgroundColor: "#2196F3", color: "white", border: "none", borderRadius: "6px", cursor: "pointer", fontSize: "12px", fontFamily: "'DM Mono', monospace" };
+const deleteBtn = { padding: "5px 12px", backgroundColor: "#f44336", color: "white", border: "none", borderRadius: "6px", cursor: "pointer", fontSize: "12px", fontFamily: "'DM Mono', monospace" };
+const backBtn = { padding: "8px 16px", backgroundColor: "#555", color: "white", border: "none", borderRadius: "6px", cursor: "pointer", fontFamily: "'DM Mono', monospace" };
+const formCard = { backgroundColor: "white", padding: "24px", borderRadius: "12px", marginBottom: "24px", boxShadow: "0 2px 12px rgba(0,0,0,0.08)" };
+const cardStyle = { backgroundColor: "white", padding: "16px", borderRadius: "12px", boxShadow: "0 2px 8px rgba(0,0,0,0.06)", display: "flex", flexDirection: "column", justifyContent: "space-between" };
 
 export default Categories;
