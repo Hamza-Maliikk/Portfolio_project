@@ -3,11 +3,11 @@ import { useEffect, useState } from "react";
 const API = `${import.meta.env.VITE_URL_API}`;
 
 const COLORS = [
-  { accent: "#8b5cf6", glow: "rgba(139,92,246,0.3)" },
-  { accent: "#3b82f6", glow: "rgba(59,130,246,0.3)"  },
-  { accent: "#ec4899", glow: "rgba(236,72,153,0.3)"  },
-  { accent: "#10b981", glow: "rgba(16,185,129,0.3)"  },
-  { accent: "#f59e0b", glow: "rgba(245,158,11,0.3)"  },
+  { accent: "#6366f1", glow: "rgba(99,102,241,0.28)" },
+  { accent: "#38bdf8", glow: "rgba(56,189,248,0.25)" },
+  { accent: "#06b6d4", glow: "rgba(6,182,212,0.22)" },
+  { accent: "#0ea5e9", glow: "rgba(14,165,233,0.22)" },
+  { accent: "#60a5fa", glow: "rgba(96,165,250,0.2)" },
 ];
 
 export default function Skills() {
@@ -52,7 +52,7 @@ export default function Skills() {
           position: fixed;
           top: -30%; left: -20%;
           width: 70vw; height: 70vw;
-          background: radial-gradient(circle, rgba(109,40,217,0.08) 0%, transparent 65%);
+          background: radial-gradient(circle, rgba(59,130,246,0.10) 0%, transparent 65%);
           pointer-events: none;
           z-index: 0;
         }
@@ -61,7 +61,7 @@ export default function Skills() {
           position: fixed;
           bottom: -20%; right: -15%;
           width: 55vw; height: 55vw;
-          background: radial-gradient(circle, rgba(59,130,246,0.06) 0%, transparent 65%);
+          background: radial-gradient(circle, rgba(6,182,212,0.08) 0%, transparent 65%);
           pointer-events: none;
           z-index: 0;
         }
@@ -84,7 +84,7 @@ export default function Skills() {
           font-weight: 500;
           letter-spacing: 0.18em;
           text-transform: uppercase;
-          color: #a78bfa;
+          color: #7dd3fc;
           margin-bottom: 1.5rem;
           opacity: 0;
           transform: translateY(12px);
@@ -93,7 +93,7 @@ export default function Skills() {
         .sp-eyebrow::before {
           content: '';
           width: 28px; height: 1px;
-          background: #a78bfa;
+          background: #7dd3fc;
           display: block;
         }
 
@@ -112,7 +112,7 @@ export default function Skills() {
 
         .sp-h1 em {
           font-style: normal;
-          background: linear-gradient(135deg, #8b5cf6 0%, #c4b5fd 50%, #60a5fa 100%);
+          background: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
@@ -180,7 +180,7 @@ export default function Skills() {
           position: absolute;
           top: 0; left: 0; right: 0;
           height: 1px;
-          background: var(--c, #8b5cf6);
+          background: var(--c, #60a5fa);
           opacity: 0.5;
           transition: opacity 0.3s;
         }
@@ -192,7 +192,7 @@ export default function Skills() {
           top: -50px; left: 50%;
           transform: translateX(-50%);
           width: 160px; height: 100px;
-          background: radial-gradient(ellipse, var(--g, rgba(139,92,246,0.3)) 0%, transparent 70%);
+          background: radial-gradient(ellipse, var(--g, rgba(59,130,246,0.28)) 0%, transparent 70%);
           opacity: 0;
           transition: opacity 0.4s ease;
           pointer-events: none;
@@ -200,8 +200,8 @@ export default function Skills() {
 
         .sp-card:hover {
           background: rgba(255,255,255,0.055);
-          border-color: rgba(139,92,246,0.25);
-          box-shadow: 0 0 0 1px rgba(139,92,246,0.1), 0 24px 48px rgba(0,0,0,0.35);
+          border-color: rgba(96,165,250,0.25);
+          box-shadow: 0 0 0 1px rgba(96,165,250,0.12), 0 24px 48px rgba(0,0,0,0.35);
           transform: translateY(-5px) !important;
         }
         .sp-card:hover::before { opacity: 1; }
@@ -214,7 +214,7 @@ export default function Skills() {
           font-weight: 700;
           letter-spacing: 0.14em;
           text-transform: uppercase;
-          color: var(--c, #8b5cf6);
+          color: var(--c, #60a5fa);
           opacity: 0.7;
           margin-bottom: 1.25rem;
         }
@@ -243,7 +243,7 @@ export default function Skills() {
           width: 6px;
           height: 6px;
           border-radius: 50%;
-          background: var(--c, #8b5cf6);
+          background: var(--c, #60a5fa);
           flex-shrink: 0;
           opacity: 0.7;
           transition: opacity 0.2s, transform 0.2s;

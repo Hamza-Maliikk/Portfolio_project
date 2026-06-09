@@ -81,7 +81,7 @@ export default function Contact() {
           position: fixed;
           top: -30%; left: -20%;
           width: 70vw; height: 70vw;
-          background: radial-gradient(circle, rgba(109,40,217,0.08) 0%, transparent 65%);
+          background: radial-gradient(circle, rgba(59,130,246,0.10) 0%, transparent 65%);
           pointer-events: none;
           z-index: 0;
         }
@@ -90,7 +90,7 @@ export default function Contact() {
           position: fixed;
           bottom: -20%; right: -15%;
           width: 55vw; height: 55vw;
-          background: radial-gradient(circle, rgba(59,130,246,0.06) 0%, transparent 65%);
+          background: radial-gradient(circle, rgba(6,182,212,0.08) 0%, transparent 65%);
           pointer-events: none;
           z-index: 0;
         }
@@ -113,7 +113,7 @@ export default function Contact() {
           font-weight: 500;
           letter-spacing: 0.18em;
           text-transform: uppercase;
-          color: #a78bfa;
+          color: #7dd3fc;
           margin-bottom: 1.5rem;
           opacity: 0;
           transform: translateY(12px);
@@ -122,7 +122,7 @@ export default function Contact() {
         .cp-eyebrow::before {
           content: '';
           width: 28px; height: 1px;
-          background: #a78bfa;
+          background: #7dd3fc;
         }
 
         .cp-h1 {
@@ -140,7 +140,7 @@ export default function Contact() {
 
         .cp-h1 em {
           font-style: normal;
-          background: linear-gradient(135deg, #8b5cf6 0%, #c4b5fd 50%, #60a5fa 100%);
+          background: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
@@ -208,15 +208,15 @@ export default function Contact() {
           position: absolute;
           top: 0; left: 0; right: 0;
           height: 1px;
-          background: #8b5cf6;
+          background: #60a5fa;
           opacity: 0.4;
           transition: opacity 0.3s;
         }
 
         .cp-info-card:hover {
           background: rgba(255,255,255,0.055);
-          border-color: rgba(139,92,246,0.25);
-          box-shadow: 0 0 0 1px rgba(139,92,246,0.1), 0 16px 36px rgba(0,0,0,0.3);
+          border-color: rgba(96,165,250,0.25);
+          box-shadow: 0 0 0 1px rgba(96,165,250,0.1), 0 16px 36px rgba(0,0,0,0.3);
           transform: translateY(-4px) !important;
         }
         .cp-info-card:hover::before { opacity: 1; }
@@ -224,18 +224,18 @@ export default function Contact() {
         .cp-icon-wrap {
           width: 40px; height: 40px;
           border-radius: 10px;
-          background: rgba(139,92,246,0.1);
-          border: 1px solid rgba(139,92,246,0.2);
+          background: rgba(59,130,246,0.1);
+          border: 1px solid rgba(59,130,246,0.2);
           display: flex;
           align-items: center;
           justify-content: center;
           flex-shrink: 0;
-          color: #a78bfa;
+          color: #38bdf8;
           transition: background 0.3s, border-color 0.3s;
         }
         .cp-info-card:hover .cp-icon-wrap {
-          background: rgba(139,92,246,0.18);
-          border-color: rgba(139,92,246,0.4);
+          background: rgba(59,130,246,0.18);
+          border-color: rgba(59,130,246,0.4);
         }
 
         .cp-info-label {
@@ -250,7 +250,7 @@ export default function Contact() {
         .cp-info-value {
           font-size: 0.875rem;
           font-weight: 500;
-          color: #c4b5fd;
+          color: #bfdbfe;
           text-decoration: none;
           transition: color 0.2s;
         }
@@ -274,7 +274,7 @@ export default function Contact() {
           position: absolute;
           top: 0; left: 0; right: 0;
           height: 1px;
-          background: linear-gradient(90deg, #8b5cf6, #60a5fa);
+          background: linear-gradient(90deg, #6366f1, #06b6d4);
           opacity: 0.5;
         }
 
@@ -324,9 +324,9 @@ export default function Contact() {
         }
 
         .cp-input:focus, .cp-textarea:focus {
-          border-color: rgba(139,92,246,0.5);
-          background: rgba(139,92,246,0.05);
-          box-shadow: 0 0 0 3px rgba(139,92,246,0.1);
+          border-color: rgba(96,165,250,0.5);
+          background: rgba(96,165,250,0.05);
+          box-shadow: 0 0 0 3px rgba(96,165,250,0.1);
         }
 
         .cp-textarea {
@@ -340,7 +340,7 @@ export default function Contact() {
           align-items: center;
           justify-content: center;
           gap: 0.5rem;
-          background: linear-gradient(135deg, #8b5cf6, #6366f1);
+          background: linear-gradient(135deg, #6366f1, #06b6d4);
           color: #fff;
           border: none;
           border-radius: 12px;
@@ -350,14 +350,14 @@ export default function Contact() {
           font-weight: 600;
           cursor: pointer;
           transition: opacity 0.2s, transform 0.2s, box-shadow 0.2s;
-          box-shadow: 0 4px 20px rgba(139,92,246,0.35);
+          box-shadow: 0 4px 20px rgba(59,130,246,0.35);
           letter-spacing: 0.02em;
           margin-top: 0.25rem;
         }
         .cp-submit:hover:not(:disabled) {
           opacity: 0.9;
           transform: translateY(-2px);
-          box-shadow: 0 8px 30px rgba(139,92,246,0.5);
+          box-shadow: 0 8px 30px rgba(59,130,246,0.45);
         }
         .cp-submit:disabled { opacity: 0.55; cursor: not-allowed; }
 

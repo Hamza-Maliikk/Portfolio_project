@@ -37,7 +37,7 @@ export default function Projects() {
           left: -20%;
           width: 70vw;
           height: 70vw;
-          background: radial-gradient(circle, rgba(109,40,217,0.08) 0%, transparent 65%);
+          background: radial-gradient(circle, rgba(59,130,246,0.10) 0%, transparent 65%);
           pointer-events: none;
           z-index: 0;
         }
@@ -48,7 +48,7 @@ export default function Projects() {
           right: -15%;
           width: 55vw;
           height: 55vw;
-          background: radial-gradient(circle, rgba(59,130,246,0.06) 0%, transparent 65%);
+          background: radial-gradient(circle, rgba(6,182,212,0.08) 0%, transparent 65%);
           pointer-events: none;
           z-index: 0;
         }
@@ -74,7 +74,7 @@ export default function Projects() {
           font-weight: 500;
           letter-spacing: 0.18em;
           text-transform: uppercase;
-          color: #a78bfa;
+          color: #7dd3fc;
           margin-bottom: 1.5rem;
           opacity: 0;
           transform: translateY(12px);
@@ -84,7 +84,7 @@ export default function Projects() {
           content: '';
           width: 28px;
           height: 1px;
-          background: #a78bfa;
+          background: #7dd3fc;
           display: block;
         }
 
@@ -103,7 +103,7 @@ export default function Projects() {
 
         .pp-h1 em {
           font-style: normal;
-          background: linear-gradient(135deg, #8b5cf6 0%, #c4b5fd 50%, #60a5fa 100%);
+          background: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
@@ -171,7 +171,7 @@ export default function Projects() {
           position: absolute;
           top: 0; left: 0; right: 0;
           height: 1px;
-          background: var(--c, #8b5cf6);
+          background: var(--c, #60a5fa);
           opacity: 0.5;
           transition: opacity 0.3s;
         }
@@ -183,7 +183,7 @@ export default function Projects() {
           top: -60px; left: 50%;
           transform: translateX(-50%);
           width: 200px; height: 120px;
-          background: radial-gradient(ellipse, var(--c, rgba(139,92,246,0.3)) 0%, transparent 70%);
+          background: radial-gradient(ellipse, var(--c, rgba(59,130,246,0.28)) 0%, transparent 70%);
           opacity: 0;
           transition: opacity 0.4s ease;
           pointer-events: none;
@@ -191,9 +191,9 @@ export default function Projects() {
 
         .pp-card:hover {
           background: rgba(255,255,255,0.055);
-          border-color: rgba(139,92,246,0.25);
+          border-color: rgba(96,165,250,0.25);
           box-shadow:
-            0 0 0 1px rgba(139,92,246,0.1),
+            0 0 0 1px rgba(96,165,250,0.12),
             0 24px 48px rgba(0,0,0,0.35);
           transform: translateY(-5px) !important;
         }
@@ -207,7 +207,7 @@ export default function Projects() {
           font-size: 0.68rem;
           font-weight: 700;
           letter-spacing: 0.1em;
-          color: var(--c, #8b5cf6);
+          color: var(--c, #60a5fa);
           opacity: 0.6;
           margin-bottom: 1rem;
         }
@@ -237,7 +237,7 @@ export default function Projects() {
           gap: 0.4rem;
           font-size: 0.78rem;
           font-weight: 500;
-          color: #a78bfa;
+          color: #38bdf8;
           text-decoration: none;
           margin-bottom: 1.5rem;
           opacity: 0.75;
@@ -261,15 +261,15 @@ export default function Projects() {
           letter-spacing: 0.04em;
           padding: 0.28rem 0.75rem;
           border-radius: 100px;
-          background: rgba(139,92,246,0.08);
-          color: #c4b5fd;
-          border: 1px solid rgba(139,92,246,0.18);
+          background: rgba(96,165,250,0.08);
+          color: #bae6fd;
+          border: 1px solid rgba(96,165,250,0.18);
           transition: background 0.2s, border-color 0.2s;
         }
 
         .pp-tag:hover {
-          background: rgba(139,92,246,0.18);
-          border-color: rgba(139,92,246,0.35);
+          background: rgba(96,165,250,0.18);
+          border-color: rgba(96,165,250,0.35);
         }
 
         /* ── Empty state ── */
@@ -285,7 +285,7 @@ export default function Projects() {
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb {
-          background: rgba(139,92,246,0.25);
+          background: rgba(59,130,246,0.25);
           border-radius: 3px;
         }
       `}</style>
@@ -314,7 +314,7 @@ export default function Projects() {
               <div
                 key={p._id}
                 className="pp-card"
-                style={{ "--c": p.color || "#8b5cf6" }}
+                style={{ "--c": p.color || "#60a5fa" }}
               >
                 <div className="pp-num">
                   {String(i + 1).padStart(2, "0")}
