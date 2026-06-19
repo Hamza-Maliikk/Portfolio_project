@@ -1,4 +1,4 @@
-# 🚀 Personal Portfolio — Full Stack
+#  Personal Portfolio — Full Stack
 
 A modern, dark-themed developer portfolio built with **React + Vite** (frontend) and **Express.js + MongoDB** (backend), deployed on **Railway**.
 
